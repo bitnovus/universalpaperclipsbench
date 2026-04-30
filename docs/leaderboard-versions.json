@@ -1,0 +1,22 @@
+{
+  "current_version": "v1",
+  "versions": [
+    {
+      "version": "v1",
+      "label": "v1",
+      "description": "Current benchmark baseline after isolation and harness improvements.",
+      "jobs": [
+        "codex-gpt-5-5-high-001"
+      ]
+    },
+    {
+      "version": "v0",
+      "label": "v0",
+      "description": "Earlier benchmark baseline retained for historical comparison.",
+      "jobs": [
+        "codex-gpt-5-5-medium-001",
+        "codex-gpt-5-5-medium-auth-001"
+      ]
+    }
+  ]
+}

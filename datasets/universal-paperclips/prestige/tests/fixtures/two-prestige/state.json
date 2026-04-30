@@ -1,0 +1,11 @@
+{
+  "savePrestige": {
+    "prestigeS": 1,
+    "prestigeU": 1
+  },
+  "savePrestigeRaw": "{\"prestigeU\":1,\"prestigeS\":1}",
+  "url": "http://127.0.0.1:8000/index2.html",
+  "visiblePrestigeS": "2",
+  "visiblePrestigeU": "2"
+}
+

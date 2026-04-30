@@ -1,0 +1,7 @@
+version = "1.0"
+
+[dataset]
+name = "universal-paperclips"
+description = "Browser-only long-horizon benchmark for Universal Paperclips prestige completion."
+tasks = ["prestige"]
+

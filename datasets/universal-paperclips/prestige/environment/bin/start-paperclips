@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mkdir -p /logs/browser /logs/verifier /run/paperclips
+chown -R agent:agent /logs/browser
+chmod 755 /logs
+chmod 700 /logs/verifier /run/paperclips
+
+if [ ! -f /run/paperclips/verifier.token ]; then
+  python3 - <<'PY'
+import secrets
+from pathlib import Path
+
+path = Path("/run/paperclips/verifier.token")
+path.write_text(secrets.token_urlsafe(32), encoding="utf-8")
+path.chmod(0o600)
+PY
+fi
+
+if [ ! -f /run/paperclips/game.token ]; then
+  python3 - <<'PY'
+import secrets
+from pathlib import Path
+
+path = Path("/run/paperclips/game.token")
+path.write_text(secrets.token_urlsafe(32), encoding="utf-8")
+path.chmod(0o600)
+PY
+fi
+
+if ! python3 - <<'PY'
+import socket
+
+with socket.socket() as sock:
+    raise SystemExit(sock.connect_ex(("127.0.0.1", 8000)))
+PY
+then
+  python3 /usr/local/bin/game_server.py > /logs/browser/http.log 2>&1 &
+  echo "$!" > /run/paperclips/http.pid
+fi
+
+if ! python3 - <<'PY'
+import socket
+
+with socket.socket() as sock:
+    raise SystemExit(sock.connect_ex(("127.0.0.1", 8765)))
+PY
+then
+  python3 /usr/local/bin/browser_daemon.py > /logs/browser/daemon.log 2>&1 &
+  echo "$!" > /run/paperclips/daemon.pid
+fi
+
+if [ "$#" -gt 0 ]; then
+  exec "$@"
+fi
+
+exec sleep infinity

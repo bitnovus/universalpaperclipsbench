@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+import argparse
+import json
+import sys
+import urllib.error
+import urllib.request
+
+BASE_URL = "http://127.0.0.1:8765"
+BASE_TIMEOUT_SEC = 120
+
+
+def request(path, payload=None, timeout=BASE_TIMEOUT_SEC):
+    data = None if payload is None else json.dumps(payload).encode("utf-8")
+    req = urllib.request.Request(
+        f"{BASE_URL}{path}",
+        data=data,
+        headers={"Content-Type": "application/json"},
+        method="POST" if payload is not None else "GET",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as response:
+            body = response.read().decode("utf-8")
+    except urllib.error.HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")
+        raise SystemExit(f"browser command failed: {exc.code} {body}") from exc
+    except urllib.error.URLError as exc:
+        raise SystemExit(f"browser daemon is unavailable: {exc}") from exc
+
+    if not body:
+        return None
+    return json.loads(body)
+
+
+def print_json(value):
+    print(json.dumps(value, indent=2, sort_keys=True))
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Restricted browser interaction tool")
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    sub.add_parser("screenshot", help="Capture a screenshot and print the path")
+    sub.add_parser("dom", help="Print visible DOM elements and refs")
+
+    click = sub.add_parser("click", help="Click a visible element")
+    click.add_argument("--ref")
+    click.add_argument("--text")
+    click.add_argument("--selector")
+
+    type_cmd = sub.add_parser("type", help="Type text into a visible element")
+    type_cmd.add_argument("--ref")
+    type_cmd.add_argument("--text", required=True)
+    type_cmd.add_argument("--clear", action="store_true")
+
+    key = sub.add_parser("key", help="Press a keyboard key")
+    key.add_argument("key")
+
+    wait = sub.add_parser("wait", help="Wait for browser/game progress")
+    wait.add_argument("seconds", type=float)
+
+    args = parser.parse_args()
+
+    if args.command == "screenshot":
+        print_json(request("/screenshot", {}))
+    elif args.command == "dom":
+        print_json(request("/dom", {}))
+    elif args.command == "click":
+        if not (args.ref or args.text or args.selector):
+            raise SystemExit("click requires --ref, --text, or --selector")
+        print_json(request("/click", vars(args)))
+    elif args.command == "type":
+        if not args.ref:
+            raise SystemExit("type requires --ref")
+        print_json(request("/type", vars(args)))
+    elif args.command == "key":
+        print_json(request("/key", {"key": args.key}))
+    elif args.command == "wait":
+        timeout = max(BASE_TIMEOUT_SEC, int(args.seconds) + 30)
+        print_json(request("/wait", {"seconds": args.seconds}, timeout=timeout))
+
+
+if __name__ == "__main__":
+    main()

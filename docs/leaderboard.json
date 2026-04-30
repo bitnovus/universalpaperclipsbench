@@ -1,0 +1,107 @@
+{
+  "benchmark": {
+    "current_version": "v1",
+    "default_required_prestige_count": 1,
+    "name": "Universal Paperclips Prestige",
+    "success_condition": "verifier reward equals 1 after a completed prestige reset",
+    "task": "universal-paperclips/prestige"
+  },
+  "entries": [
+    {
+      "agent": "codex",
+      "agent_duration_seconds": 41629,
+      "agent_version": "0.125.0",
+      "benchmark_version": "v1",
+      "cache_tokens": 101529728,
+      "duration_seconds": 41651,
+      "exception_type": null,
+      "finished_at": "2026-04-30T12:10:36.086157Z",
+      "harbor_job_id": "8a1e2676-e493-440b-9861-5b7a3f205596",
+      "input_tokens": 103096769,
+      "job_name": "codex-gpt-5-5-high-001",
+      "model": "gpt-5.5",
+      "output_tokens": 155106,
+      "reasoning_effort": "high",
+      "reward": 1.0,
+      "started_at": "2026-04-30T00:36:24.954513Z",
+      "status": "success",
+      "task": "universal-paperclips/prestige",
+      "task_checksum": "4da79cd5799c9abbd55b86069d84f179e6880f034a290632274f685a18be748e",
+      "task_path": "datasets/universal-paperclips/prestige",
+      "trial_name": "prestige__JAS4Cnb"
+    },
+    {
+      "agent": "codex",
+      "agent_duration_seconds": 17,
+      "agent_version": "0.125.0",
+      "benchmark_version": "v0",
+      "cache_tokens": null,
+      "duration_seconds": 45,
+      "exception_type": "NonZeroAgentExitCodeError",
+      "finished_at": "2026-04-29T16:26:23.264090Z",
+      "harbor_job_id": "6497ebe3-1df5-4878-a820-c5028f3202a4",
+      "input_tokens": null,
+      "job_name": "codex-gpt-5-5-medium-001",
+      "model": "gpt-5.5",
+      "output_tokens": null,
+      "reasoning_effort": "medium",
+      "reward": 0.0,
+      "started_at": "2026-04-29T16:25:37.876227Z",
+      "status": "error",
+      "task": "universal-paperclips/prestige",
+      "task_checksum": "3cf5ac52495d43d37b1e20c374a758413498a66d7ef073f9577f91ae615938ce",
+      "task_path": "datasets/universal-paperclips/prestige",
+      "trial_name": "prestige__ZVUHWHa"
+    },
+    {
+      "agent": "codex",
+      "agent_duration_seconds": 28127,
+      "agent_version": "0.125.0",
+      "benchmark_version": "v0",
+      "cache_tokens": 57556992,
+      "duration_seconds": 28160,
+      "exception_type": "NonZeroAgentExitCodeError",
+      "finished_at": "2026-04-30T00:20:09.904821Z",
+      "harbor_job_id": "77d61277-00e7-44a1-a772-bc3062831a43",
+      "input_tokens": 58493531,
+      "job_name": "codex-gpt-5-5-medium-auth-001",
+      "model": "gpt-5.5",
+      "output_tokens": 87837,
+      "reasoning_effort": "medium",
+      "reward": null,
+      "started_at": "2026-04-29T16:30:50.219189Z",
+      "status": "error",
+      "task": "universal-paperclips/prestige",
+      "task_checksum": "3cf5ac52495d43d37b1e20c374a758413498a66d7ef073f9577f91ae615938ce",
+      "task_path": "datasets/universal-paperclips/prestige",
+      "trial_name": "prestige__2io3AWr"
+    }
+  ],
+  "generated_at": "2026-04-30T13:59:31.965190Z",
+  "source": "local Harbor job result.json files",
+  "summary": {
+    "errors": 2,
+    "failures": 0,
+    "runs": 3,
+    "successes": 1
+  },
+  "versions": [
+    {
+      "description": "Current benchmark baseline after isolation and harness improvements.",
+      "jobs": [
+        "codex-gpt-5-5-high-001"
+      ],
+      "label": "v1",
+      "version": "v1"
+    },
+    {
+      "description": "Earlier benchmark baseline retained for historical comparison.",
+      "jobs": [
+        "codex-gpt-5-5-medium-001",
+        "codex-gpt-5-5-medium-auth-001"
+      ],
+      "label": "v0",
+      "version": "v0"
+    }
+  ]
+}

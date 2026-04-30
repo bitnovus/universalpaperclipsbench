@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Universal Paperclips Benchmark Leaderboard</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f7f3;
+        --panel: #ffffff;
+        --text: #202124;
+        --muted: #666b73;
+        --line: #dadde2;
+        --accent: #236a57;
+        --accent-soft: #e6f2ee;
+        --warning: #965f00;
+        --warning-soft: #fff3d6;
+        --error: #a33030;
+        --error-soft: #fbe7e7;
+        --shadow: 0 12px 40px rgba(24, 30, 36, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        line-height: 1.45;
+      }
+
+      main {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 40px 0 56px;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 24px;
+        align-items: end;
+        padding-bottom: 28px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 780px;
+        font-size: clamp(2rem, 6vw, 4.5rem);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .lede {
+        margin: 18px 0 0;
+        max-width: 760px;
+        color: var(--muted);
+        font-size: 1.05rem;
+      }
+
+      .scorebox {
+        min-width: 220px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .scorebox .label {
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .scorebox .value {
+        margin-top: 6px;
+        font-size: 2.25rem;
+        font-weight: 760;
+      }
+
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+        margin: 24px 0;
+      }
+
+      .metric {
+        min-height: 96px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .metric span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 1.6rem;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        margin: 28px 0 12px;
+      }
+
+      .toolbar h2 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .updated {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .version-filter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0 0 18px;
+      }
+
+      .version-filter button {
+        min-height: 34px;
+        padding: 6px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel);
+        color: var(--text);
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+
+      .version-filter button[aria-pressed="true"] {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      table {
+        width: 100%;
+        min-width: 900px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .model {
+        white-space: normal;
+      }
+
+      .model strong {
+        display: block;
+      }
+
+      .model span {
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 750;
+      }
+
+      .pill.success {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .pill.error {
+        background: var(--error-soft);
+        color: var(--error);
+      }
+
+      .pill.failure {
+        background: var(--warning-soft);
+        color: var(--warning);
+      }
+
+      code {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 0.9em;
+      }
+
+      .empty {
+        padding: 28px;
+        color: var(--muted);
+      }
+
+      footer {
+        margin-top: 24px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      footer a {
+        color: var(--accent);
+      }
+
+      @media (max-width: 760px) {
+        main {
+          width: min(100% - 24px, 1180px);
+          padding-top: 24px;
+        }
+
+        header,
+        .meta {
+          grid-template-columns: 1fr;
+        }
+
+        .toolbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .scorebox {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>Universal Paperclips Leaderboard</h1>
+          <p class="lede">
+            Harbor benchmark results for the browser-only prestige task. Success requires a
+            verified endgame reset, with the verifier checking hidden state outside the agent
+            context.
+          </p>
+        </div>
+        <section class="scorebox" aria-label="Best result">
+          <div class="label">Best Reward</div>
+          <div class="value" id="best-reward">--</div>
+        </section>
+      </header>
+
+      <section class="meta" aria-label="Summary metrics">
+        <div class="metric">
+          <span>Runs</span>
+          <strong id="run-count">--</strong>
+        </div>
+        <div class="metric">
+          <span>Successes</span>
+          <strong id="success-count">--</strong>
+        </div>
+        <div class="metric">
+          <span>Task</span>
+          <strong id="task-name">--</strong>
+        </div>
+        <div class="metric">
+          <span>Prestige Target</span>
+          <strong id="prestige-target">--</strong>
+        </div>
+        <div class="metric">
+          <span>Version</span>
+          <strong id="version-name">--</strong>
+        </div>
+      </section>
+
+      <section aria-labelledby="runs-heading">
+        <div class="toolbar">
+          <h2 id="runs-heading">Runs</h2>
+          <div class="updated" id="updated">Loading leaderboard data...</div>
+        </div>
+        <div class="version-filter" id="version-filter" aria-label="Benchmark version"></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Version</th>
+                <th>Agent and Model</th>
+                <th>Effort</th>
+                <th>Reward</th>
+                <th>Status</th>
+                <th>Agent Runtime</th>
+                <th>Output Tokens</th>
+                <th>Finished</th>
+                <th>Job</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+          </table>
+          <div class="empty" id="empty" hidden>No runs found in leaderboard data.</div>
+        </div>
+      </section>
+
+      <footer>
+        Data is generated from local Harbor result files with
+        <code>scripts/update_leaderboard.py</code>. Raw <code>jobs/</code> artifacts are not
+        published.
+      </footer>
+    </main>
+
+    <script>
+      const numberFormatter = new Intl.NumberFormat("en-US");
+      const dateFormatter = new Intl.DateTimeFormat("en-US", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      });
+
+      function formatReward(value) {
+        return typeof value === "number" ? value.toFixed(3) : "--";
+      }
+
+      function formatDuration(seconds) {
+        if (typeof seconds !== "number") {
+          return "--";
+        }
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        if (hours > 0) {
+          return `${hours}h ${minutes}m`;
+        }
+        return `${minutes}m`;
+      }
+
+      function formatDate(value) {
+        if (!value) {
+          return "--";
+        }
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) {
+          return "--";
+        }
+        return dateFormatter.format(date);
+      }
+
+      function textCell(value, className) {
+        const td = document.createElement("td");
+        if (className) {
+          td.className = className;
+        }
+        td.textContent = value;
+        return td;
+      }
+
+      let leaderboardPayload = null;
+      let selectedVersion = null;
+
+      function entriesForVersion(payload, version) {
+        const entries = Array.isArray(payload.entries) ? payload.entries : [];
+        if (version === "all") {
+          return entries;
+        }
+        return entries.filter((entry) => entry.benchmark_version === version);
+      }
+
+      function versionLabel(payload, version) {
+        if (version === "all") {
+          return "All";
+        }
+        const versions = Array.isArray(payload.versions) ? payload.versions : [];
+        const match = versions.find((item) => item.version === version);
+        return match?.label || version || "--";
+      }
+
+      function summarize(entries) {
+        return {
+          runs: entries.length,
+          successes: entries.filter((entry) => entry.status === "success").length,
+        };
+      }
+
+      function renderEntry(entry, index) {
+        const row = document.createElement("tr");
+
+        row.append(textCell(String(index + 1)));
+        row.append(textCell(entry.benchmark_version || "--"));
+
+        const model = document.createElement("td");
+        model.className = "model";
+        const strong = document.createElement("strong");
+        strong.textContent = entry.model || "Unknown model";
+        const span = document.createElement("span");
+        span.textContent = `${entry.agent || "unknown agent"}${entry.agent_version ? ` ${entry.agent_version}` : ""}`;
+        model.append(strong, span);
+        row.append(model);
+
+        row.append(textCell(entry.reasoning_effort || "--"));
+        row.append(textCell(formatReward(entry.reward)));
+
+        const status = document.createElement("td");
+        const pill = document.createElement("span");
+        pill.className = `pill ${entry.status || "failure"}`;
+        pill.textContent = entry.status || "unknown";
+        status.append(pill);
+        row.append(status);
+
+        row.append(textCell(formatDuration(entry.agent_duration_seconds || entry.duration_seconds)));
+        row.append(textCell(
+          typeof entry.output_tokens === "number" ? numberFormatter.format(entry.output_tokens) : "--"
+        ));
+        row.append(textCell(formatDate(entry.finished_at)));
+        row.append(textCell(entry.job_name || "--"));
+
+        return row;
+      }
+
+      function renderVersionButtons(payload) {
+        const container = document.getElementById("version-filter");
+        const versions = Array.isArray(payload.versions) ? payload.versions : [];
+        const buttons = [
+          ...versions.map((item) => ({ label: item.label || item.version, version: item.version })),
+          { label: "All", version: "all" },
+        ];
+
+        container.replaceChildren(...buttons.map((item) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = item.label;
+          button.setAttribute("aria-pressed", String(item.version === selectedVersion));
+          button.addEventListener("click", () => {
+            selectedVersion = item.version;
+            render(payload);
+          });
+          return button;
+        }));
+      }
+
+      function render(payload) {
+        leaderboardPayload = payload;
+        if (!selectedVersion) {
+          selectedVersion = payload.benchmark?.current_version || "v1";
+        }
+        const entries = entriesForVersion(payload, selectedVersion);
+        const summary = summarize(entries);
+        const bestReward = entries.reduce((best, entry) => {
+          return typeof entry.reward === "number" ? Math.max(best, entry.reward) : best;
+        }, 0);
+
+        document.getElementById("best-reward").textContent = formatReward(bestReward);
+        document.getElementById("run-count").textContent = numberFormatter.format(summary.runs);
+        document.getElementById("success-count").textContent = numberFormatter.format(summary.successes);
+        document.getElementById("task-name").textContent = payload.benchmark?.task || "--";
+        document.getElementById("prestige-target").textContent =
+          String(payload.benchmark?.default_required_prestige_count || 1);
+        document.getElementById("version-name").textContent = versionLabel(payload, selectedVersion);
+        document.getElementById("updated").textContent = payload.generated_at
+          ? `Generated ${formatDate(payload.generated_at)}`
+          : "Generated timestamp unavailable";
+
+        renderVersionButtons(payload);
+        const body = document.getElementById("leaderboard-body");
+        body.replaceChildren(...entries.map(renderEntry));
+        document.getElementById("empty").hidden = entries.length > 0;
+      }
+
+      fetch("leaderboard.json", { cache: "no-store" })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(render)
+        .catch((error) => {
+          document.getElementById("updated").textContent = `Could not load leaderboard data: ${error.message}`;
+          document.getElementById("empty").hidden = false;
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+version = "1.0"
+
+[task]
+name = "universal-paperclips/prestige"
+description = "Reach a real Universal Paperclips prestige reset using only browser interactions."
+authors = [
+  { name = "OpenAI Codex", email = "codex@example.invalid" }
+]
+keywords = ["browser", "game", "long-horizon", "universal-paperclips", "prestige"]
+
+[metadata]
+difficulty = "hard"
+category = "browser_control"
+tags = ["browser", "game", "long-horizon", "prestige"]
+expert_time_estimate_min = 480.0
+junior_time_estimate_min = 720.0
+required_prestige_count = 1
+vendored_snapshot = "jgmize/paperclips master archive, downloaded 2026-04-29"
+vendored_snapshot_sha256 = "1875c7fa64e55536af7e53dc91814a5be352afc8bf4a96d03b9db7a7f3c4d343"
+vendored_patch = "Removed visible debug/cheat buttons from index2.html for benchmark validity."
+
+[agent]
+timeout_sec = 43200.0
+user = "agent"
+
+[verifier]
+timeout_sec = 120.0
+user = "root"
+
+[environment]
+build_timeout_sec = 1800.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+
+[environment.env]
+REQUIRED_PRESTIGE_COUNT = "1"
+PAPERCLIPS_URL = "http://127.0.0.1:8000/index2.html"
