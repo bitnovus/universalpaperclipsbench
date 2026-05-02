@@ -439,7 +439,8 @@
       <footer>
         Data is generated from local Harbor result files with
         <code>scripts/update_leaderboard.py</code>. Raw <code>jobs/</code> artifacts are not
-        published. See <a href="benchmark.md">benchmark methodology</a>.
+        published. See <a href="benchmark.md">benchmark methodology</a> or the
+        <a href="https://github.com/bitnovus/universalpaperclipsbench">GitHub repository</a>.
       </footer>
     </main>
 
@@ -629,8 +630,8 @@
           ? `Generated ${formatDate(payload.generated_at)}`
           : "Generated timestamp unavailable";
         document.getElementById("version-note").textContent = selectedVersion === "all"
-          ? "Showing all versions. Cross-version rank is for audit browsing only; use one version filter for direct comparison."
-          : `Showing ${versionLabel(payload, selectedVersion)} runs. ${selectedMeta?.description || ""} ${selectedMeta?.comparison_note || ""}`.trim();
+          ? "Showing all versions. Cross-version rank is for audit browsing only. Results are early single trials unless otherwise stated."
+          : `Showing ${versionLabel(payload, selectedVersion)} runs. Results are early single trials unless otherwise stated. ${selectedMeta?.description || ""} ${selectedMeta?.comparison_note || ""}`.trim();
 
         renderVersionButtons(payload);
         const body = document.getElementById("leaderboard-body");

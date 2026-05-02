@@ -21,6 +21,7 @@ required_files=(
   "$task_dir/environment/vendor/projects.js"
   "$task_dir/tests/test.sh"
   "docs/index.html"
+  "docs/assets/paperclips-space-run.png"
   "docs/leaderboard.json"
   "docs/leaderboard-versions.json"
   "scripts/update_leaderboard.py"

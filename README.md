@@ -14,6 +14,15 @@ the interface is ordinary browser UI, and success tests long-running,
 long-horizon planning over hours rather than a single tool call or short
 interaction.
 
+## Status
+
+This is an exploratory single-task benchmark. The published leaderboard contains
+early single-trial results unless a run is explicitly marked otherwise, so treat
+the current scores as an initial comparison rather than a statistically stable
+model ranking.
+
+![Universal Paperclips space-exploration phase during a benchmark run](docs/assets/paperclips-space-run.png)
+
 ## Run
 
 Install Harbor first if it is not already available:
