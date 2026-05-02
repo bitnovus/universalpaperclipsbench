@@ -32,8 +32,8 @@ From the repository root:
 Examples:
 
 ```bash
-.venv/bin/harbor run -p datasets/universal-paperclips -a codex -m gpt-5.3-codex --artifact /logs/browser
-.venv/bin/harbor run -p datasets/universal-paperclips -a claude-code -m claude-sonnet-4-5 --artifact /logs/browser
+.venv/bin/harbor run -p datasets/universal-paperclips -a codex -m gpt-5.5 --artifact /logs/browser
+.venv/bin/harbor run -p datasets/universal-paperclips -a claude-code -m claude-sonnet-4-6 --artifact /logs/browser
 .venv/bin/harbor run -p datasets/universal-paperclips -a gemini-cli -m gemini-2.5-pro --artifact /logs/browser
 ```
 
@@ -97,8 +97,14 @@ Browser artifacts:
 
 ## Leaderboard
 
-The GitHub Pages site lives in `docs/` and renders `docs/leaderboard.json`.
-Raw Harbor `jobs/` artifacts are ignored because they can contain transcripts,
+The public leaderboard is published at:
+
+```text
+https://bitnovus.github.io/universalpaperclipsbench/
+```
+
+The static site lives in `docs/` and renders `docs/leaderboard.json`. Raw
+Harbor `jobs/` artifacts are ignored because they can contain transcripts,
 SQLite state, and local auth/cache files.
 
 Serve the leaderboard locally with `docs/` as the web root:
@@ -123,8 +129,8 @@ to the current version. The v1 line uses semver-style labels: `v1.0.0` for the
 12-hour isolated browser baseline, `v1.1.0` for the 16-hour instruction update,
 and `v1.1.1` for the restricted Playwright-shaped MCP surface.
 
-The included workflow publishes `docs/` through GitHub Actions. In the GitHub
-repository settings, configure Pages to use GitHub Actions as the source.
+The included workflow publishes `docs/` through GitHub Actions and configures
+GitHub Pages for the repository.
 
 ## License
 
