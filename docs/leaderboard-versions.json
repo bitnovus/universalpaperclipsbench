@@ -1,18 +1,54 @@
 {
-  "current_version": "v1",
+  "current_version": "v1.1.1",
   "versions": [
     {
-      "version": "v1",
-      "label": "v1",
-      "description": "Current benchmark baseline after isolation and harness improvements.",
+      "version": "v1.1.1",
+      "label": "v1.1.1",
+      "description": "Adds a restricted Playwright-shaped MCP surface to the v1.1.0 browser controls.",
+      "timeout_seconds": 57600,
+      "browser_surface": "CLI + restricted MCP",
+      "comparison_note": "Current public baseline. Compare scores directly within this version.",
       "jobs": [
-        "codex-gpt-5-5-high-001"
+        "codex-gpt-5-5-xhigh-v1-1-mcp-001",
+        "claude-sonnet-4-6-auto-v1-1-mcp-001",
+        "claude-sonnet-4-6-auto-v1-1-mcp-002"
+      ]
+    },
+    {
+      "version": "v1.1.0",
+      "label": "v1.1.0",
+      "description": "Generalized visible action instructions and a 16-hour agent timeout, before MCP support.",
+      "timeout_seconds": 57600,
+      "browser_surface": "CLI browser controls",
+      "comparison_note": "Historical baseline before MCP support; compare with v1.1.1 cautiously.",
+      "jobs": [
+        "codex-gpt-5-5-high-v1-1-001",
+        "codex-gpt-5-5-xhigh-v1-1-001",
+        "claude-sonnet-4-6-auto-v1-1-001"
+      ]
+    },
+    {
+      "version": "v1.0.0",
+      "label": "v1.0.0",
+      "description": "12-hour prestige baseline after isolation and harness improvements.",
+      "timeout_seconds": 43200,
+      "browser_surface": "CLI browser controls",
+      "comparison_note": "Historical 12-hour baseline; not directly comparable to v1.1.x.",
+      "jobs": [
+        "codex-gpt-5-5-high-001",
+        "codex-gpt-5-5-medium-v1-001",
+        "codex-gpt-5-5-xhigh-v1-001",
+        "claude-sonnet-4-6-auto-v1-001",
+        "claude-sonnet-4-6-auto-v1-002"
       ]
     },
     {
       "version": "v0",
       "label": "v0",
       "description": "Earlier benchmark baseline retained for historical comparison.",
+      "timeout_seconds": 43200,
+      "browser_surface": "Legacy CLI browser controls",
+      "comparison_note": "Legacy results are retained for audit history only.",
       "jobs": [
         "codex-gpt-5-5-medium-001",
         "codex-gpt-5-5-medium-auth-001"

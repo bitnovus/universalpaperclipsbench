@@ -52,6 +52,12 @@ def main():
     type_cmd.add_argument("--text", required=True)
     type_cmd.add_argument("--clear", action="store_true")
 
+    select_cmd = sub.add_parser("select", help="Select an option in a visible dropdown")
+    select_cmd.add_argument("--ref", required=True)
+    select_cmd.add_argument("--value")
+    select_cmd.add_argument("--label")
+    select_cmd.add_argument("--index", type=int)
+
     key = sub.add_parser("key", help="Press a keyboard key")
     key.add_argument("key")
 
@@ -72,6 +78,10 @@ def main():
         if not args.ref:
             raise SystemExit("type requires --ref")
         print_json(request("/type", vars(args)))
+    elif args.command == "select":
+        if not (args.value or args.label or args.index is not None):
+            raise SystemExit("select requires --value, --label, or --index")
+        print_json(request("/select", vars(args)))
     elif args.command == "key":
         print_json(request("/key", {"key": args.key}))
     elif args.command == "wait":

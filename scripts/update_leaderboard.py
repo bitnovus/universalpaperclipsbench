@@ -44,14 +44,16 @@ def read_json(path: Path) -> dict[str, Any] | None:
         return None
 
 
-def load_version_config(config_path: Path | None) -> tuple[str, list[dict[str, Any]], dict[str, str]]:
-    default_version = "v1"
+def load_version_config(
+    config_path: Path | None,
+) -> tuple[str, list[dict[str, Any]], dict[str, str], dict[str, dict[str, Any]]]:
+    default_version = "v1.1.1"
     if config_path is None:
-        return default_version, [], {}
+        return default_version, [], {}, {}
 
     data = read_json(config_path)
     if not data:
-        return default_version, [], {}
+        return default_version, [], {}, {}
 
     current_version = data.get("current_version")
     if not isinstance(current_version, str):
@@ -60,34 +62,37 @@ def load_version_config(config_path: Path | None) -> tuple[str, list[dict[str, A
     versions = data.get("versions") or []
     normalized_versions: list[dict[str, Any]] = []
     job_versions: dict[str, str] = {}
+    version_details: dict[str, dict[str, Any]] = {}
     for item in versions:
         if not isinstance(item, dict) or not isinstance(item.get("version"), str):
             continue
         version = item["version"]
         jobs = [job for job in item.get("jobs", []) if isinstance(job, str)]
-        normalized_versions.append(
-            {
-                "version": version,
-                "label": item.get("label") if isinstance(item.get("label"), str) else version,
-                "description": item.get("description") if isinstance(item.get("description"), str) else "",
-                "jobs": jobs,
-            }
-        )
+        normalized = {
+            "version": version,
+            "label": item.get("label") if isinstance(item.get("label"), str) else version,
+            "description": item.get("description") if isinstance(item.get("description"), str) else "",
+            "jobs": jobs,
+        }
+        for key in ("timeout_seconds", "browser_surface", "comparison_note"):
+            if key in item:
+                normalized[key] = item[key]
+        normalized_versions.append(normalized)
+        version_details[version] = normalized
         for job_name in jobs:
             job_versions[job_name] = version
 
     if current_version not in {item["version"] for item in normalized_versions}:
-        normalized_versions.insert(
-            0,
-            {
-                "version": current_version,
-                "label": current_version,
-                "description": "Current benchmark baseline.",
-                "jobs": [],
-            },
-        )
+        current = {
+            "version": current_version,
+            "label": current_version,
+            "description": "Current benchmark baseline.",
+            "jobs": [],
+        }
+        normalized_versions.insert(0, current)
+        version_details[current_version] = current
 
-    return current_version, normalized_versions, job_versions
+    return current_version, normalized_versions, job_versions, version_details
 
 
 def reward_from(result: dict[str, Any]) -> float | None:
@@ -108,9 +113,11 @@ def effort_from(kwargs: dict[str, Any]) -> str | None:
 def status_for(reward: float | None, exception_type: str | None) -> str:
     if reward is not None and reward >= 1:
         return "success"
+    if exception_type == "AgentTimeoutError":
+        return "timeout"
     if exception_type:
-        return "error"
-    return "failure"
+        return "agent_error"
+    return "game_failure"
 
 
 def load_trial(job_dir: Path, trial_path: Path) -> dict[str, Any] | None:
@@ -164,6 +171,7 @@ def load_entries(
     include_dry_runs: bool,
     current_version: str,
     job_versions: dict[str, str],
+    version_details: dict[str, dict[str, Any]],
 ) -> list[dict[str, Any]]:
     entries: list[dict[str, Any]] = []
     if not jobs_dir.exists():
@@ -175,14 +183,29 @@ def load_entries(
         for trial_path in sorted(job_dir.glob("*/result.json")):
             entry = load_trial(job_dir, trial_path)
             if entry:
-                entry["benchmark_version"] = job_versions.get(job_dir.name, current_version)
+                benchmark_version = job_versions.get(job_dir.name, current_version)
+                version_detail = version_details.get(benchmark_version, {})
+                entry["benchmark_version"] = benchmark_version
+                entry["timeout_seconds"] = version_detail.get("timeout_seconds")
+                entry["browser_surface"] = version_detail.get("browser_surface")
                 entries.append(entry)
 
-    def sort_key(entry: dict[str, Any]) -> tuple[float, int, str]:
+    def sort_key(entry: dict[str, Any]) -> tuple[float, int, int, str]:
         reward = entry.get("reward")
         duration = entry.get("agent_duration_seconds") or entry.get("duration_seconds")
+        status_rank = {
+            "success": 0,
+            "game_failure": 1,
+            "timeout": 2,
+            "agent_error": 3,
+        }.get(entry.get("status"), 4)
         finished = entry.get("finished_at") or ""
-        return (-(reward if isinstance(reward, int | float) else -1), duration or 10**12, finished)
+        return (
+            -(reward if isinstance(reward, int | float) else -1),
+            status_rank,
+            duration or 10**12,
+            finished,
+        )
 
     return sorted(entries, key=sort_key)
 
@@ -206,8 +229,11 @@ def build_payload(
         "summary": {
             "runs": len(entries),
             "successes": sum(1 for entry in entries if entry.get("status") == "success"),
-            "errors": sum(1 for entry in entries if entry.get("status") == "error"),
-            "failures": sum(1 for entry in entries if entry.get("status") == "failure"),
+            "game_failures": sum(1 for entry in entries if entry.get("status") == "game_failure"),
+            "timeouts": sum(1 for entry in entries if entry.get("status") == "timeout"),
+            "agent_errors": sum(1 for entry in entries if entry.get("status") == "agent_error"),
+            "errors": sum(1 for entry in entries if entry.get("status") == "agent_error"),
+            "failures": sum(1 for entry in entries if entry.get("status") == "game_failure"),
         },
         "entries": entries,
     }
@@ -221,8 +247,14 @@ def main() -> int:
     parser.add_argument("--include-dry-runs", action="store_true")
     args = parser.parse_args()
 
-    current_version, versions, job_versions = load_version_config(args.versions)
-    entries = load_entries(args.jobs_dir, args.include_dry_runs, current_version, job_versions)
+    current_version, versions, job_versions, version_details = load_version_config(args.versions)
+    entries = load_entries(
+        args.jobs_dir,
+        args.include_dry_runs,
+        current_version,
+        job_versions,
+        version_details,
+    )
     payload = build_payload(entries, current_version, versions)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)

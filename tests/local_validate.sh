@@ -4,6 +4,8 @@ set -euo pipefail
 task_dir="datasets/universal-paperclips/prestige"
 
 required_files=(
+  "LICENSE"
+  "THIRD_PARTY_NOTICES.md"
   "datasets/universal-paperclips/dataset.toml"
   "$task_dir/task.toml"
   "$task_dir/instruction.md"
@@ -11,6 +13,7 @@ required_files=(
   "$task_dir/environment/bin/browser"
   "$task_dir/environment/bin/browser_daemon.py"
   "$task_dir/environment/bin/game_server.py"
+  "$task_dir/environment/bin/paperclips_mcp"
   "$task_dir/environment/bin/paperclips_verify.py"
   "$task_dir/environment/bin/start-paperclips"
   "$task_dir/environment/vendor/index2.html"
@@ -34,6 +37,7 @@ python_files=(
   "$task_dir/environment/bin/browser"
   "$task_dir/environment/bin/browser_daemon.py"
   "$task_dir/environment/bin/game_server.py"
+  "$task_dir/environment/bin/paperclips_mcp"
   "$task_dir/environment/bin/paperclips_verify.py"
   "$task_dir/tests/test_verifier.py"
 )
@@ -43,8 +47,8 @@ for py_file in "${python_files[@]}"; do
 done
 
 python3 -c "import ast, pathlib; ast.parse(pathlib.Path('scripts/update_leaderboard.py').read_text(encoding='utf-8'))"
-python3 -c "import json, pathlib; data=json.loads(pathlib.Path('docs/leaderboard.json').read_text(encoding='utf-8')); assert data['benchmark']['task'] == 'universal-paperclips/prestige'; assert data['benchmark']['current_version'] == 'v1'; assert isinstance(data['entries'], list)"
-python3 -c "import json, pathlib; data=json.loads(pathlib.Path('docs/leaderboard-versions.json').read_text(encoding='utf-8')); assert data.get('current_version') == 'v1'; assert isinstance(data.get('versions'), list)"
+python3 -c "import json, pathlib; data=json.loads(pathlib.Path('docs/leaderboard.json').read_text(encoding='utf-8')); assert data['benchmark']['task'] == 'universal-paperclips/prestige'; assert data['benchmark']['current_version'] == 'v1.1.1'; assert isinstance(data['entries'], list)"
+python3 -c "import json, pathlib; data=json.loads(pathlib.Path('docs/leaderboard-versions.json').read_text(encoding='utf-8')); assert data.get('current_version') == 'v1.1.1'; assert isinstance(data.get('versions'), list)"
 
 PYTHONDONTWRITEBYTECODE=1 bash scripts/run_verifier_fixtures.sh
 

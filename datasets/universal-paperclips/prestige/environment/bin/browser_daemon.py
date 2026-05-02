@@ -246,6 +246,26 @@ async def type_text(payload):
     return {"ok": True}
 
 
+async def select_option(payload):
+    page = state["page"]
+    selector = f'[data-bench-ref="{payload["ref"]}"]:visible'
+    locator = page.locator(selector)
+    if payload.get("label"):
+        await locator.select_option(label=payload["label"], timeout=10000)
+        target = {"ref": payload["ref"], "label": payload["label"]}
+    elif payload.get("value"):
+        await locator.select_option(value=payload["value"], timeout=10000)
+        target = {"ref": payload["ref"], "value": payload["value"]}
+    elif payload.get("index") is not None:
+        await locator.select_option(index=int(payload["index"]), timeout=10000)
+        target = {"ref": payload["ref"], "index": int(payload["index"])}
+    else:
+        raise ValueError("select requires label, value, or index")
+    write_jsonl(ACTION_LOG, {"ts": time.time(), "action": "select", **target})
+    await log_visible_progress()
+    return {"ok": True}
+
+
 async def key(payload):
     await state["page"].keyboard.press(payload["key"])
     write_jsonl(ACTION_LOG, {"ts": time.time(), "action": "key", "key": payload["key"]})
@@ -319,6 +339,8 @@ async def route(path, payload, headers):
             return await click(payload)
         if path == "/type":
             return await type_text(payload)
+        if path == "/select":
+            return await select_option(payload)
         if path == "/key":
             return await key(payload)
         if path == "/wait":

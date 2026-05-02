@@ -7,18 +7,21 @@
     <style>
       :root {
         color-scheme: light;
-        --bg: #f7f7f3;
+        --bg: #f5f6f3;
         --panel: #ffffff;
         --text: #202124;
-        --muted: #666b73;
-        --line: #dadde2;
-        --accent: #236a57;
-        --accent-soft: #e6f2ee;
+        --muted: #62676f;
+        --subtle: #858b94;
+        --line: #d9ddd7;
+        --line-soft: #ecefeb;
+        --accent: #17624f;
+        --accent-soft: #e4f1ed;
         --warning: #965f00;
         --warning-soft: #fff3d6;
         --error: #a33030;
         --error-soft: #fbe7e7;
-        --shadow: 0 12px 40px rgba(24, 30, 36, 0.08);
+        --neutral-soft: #eef0f2;
+        --shadow: 0 16px 42px rgba(24, 30, 36, 0.08);
       }
 
       * {
@@ -27,7 +30,9 @@
 
       body {
         margin: 0;
-        background: var(--bg);
+        background:
+          linear-gradient(180deg, #ffffff 0, var(--bg) 260px),
+          var(--bg);
         color: var(--text);
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -38,84 +43,36 @@
       main {
         width: min(1180px, calc(100% - 32px));
         margin: 0 auto;
-        padding: 40px 0 56px;
+        padding: 24px 0 56px;
       }
 
       header {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 24px;
-        align-items: end;
-        padding-bottom: 28px;
+        padding-bottom: 16px;
         border-bottom: 1px solid var(--line);
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--accent);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
 
       h1 {
         margin: 0;
-        max-width: 780px;
-        font-size: clamp(2rem, 6vw, 4.5rem);
-        line-height: 0.96;
+        max-width: 820px;
+        font-size: clamp(2.15rem, 5vw, 3.85rem);
+        line-height: 0.94;
         letter-spacing: 0;
       }
 
       .lede {
-        margin: 18px 0 0;
+        margin: 12px 0 0;
         max-width: 760px;
         color: var(--muted);
-        font-size: 1.05rem;
-      }
-
-      .scorebox {
-        min-width: 220px;
-        padding: 18px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--panel);
-        box-shadow: var(--shadow);
-      }
-
-      .scorebox .label {
-        color: var(--muted);
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-
-      .scorebox .value {
-        margin-top: 6px;
-        font-size: 2.25rem;
-        font-weight: 760;
-      }
-
-      .meta {
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 12px;
-        margin: 24px 0;
-      }
-
-      .metric {
-        min-height: 96px;
-        padding: 16px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: var(--panel);
-      }
-
-      .metric span {
-        display: block;
-        color: var(--muted);
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-
-      .metric strong {
-        display: block;
-        margin-top: 8px;
-        font-size: 1.6rem;
+        font-size: clamp(1rem, 1.8vw, 1.12rem);
       }
 
       .toolbar {
@@ -123,12 +80,90 @@
         gap: 10px;
         align-items: center;
         justify-content: space-between;
-        margin: 28px 0 12px;
+        margin: 18px 0 12px;
       }
 
       .toolbar h2 {
         margin: 0;
-        font-size: 1.2rem;
+        font-size: 1.08rem;
+        letter-spacing: 0;
+      }
+
+      .section {
+        margin-top: 28px;
+      }
+
+      .section h2 {
+        margin: 0 0 12px;
+        font-size: 1.08rem;
+      }
+
+      .method-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .about-copy {
+        max-width: 780px;
+      }
+
+      .about-copy p {
+        margin: 0 0 12px;
+        color: var(--muted);
+      }
+
+      .motivation-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .motivation-list li {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .motivation-list li:last-child {
+        border-bottom: 0;
+      }
+
+      .motivation-list strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+
+      .motivation-list span {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .method-item {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .method-item h3 {
+        margin: 0 0 8px;
+        font-size: 0.95rem;
+      }
+
+      .method-item p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.92rem;
       }
 
       .updated {
@@ -137,29 +172,33 @@
       }
 
       .version-filter {
-        display: flex;
+        display: inline-flex;
         flex-wrap: wrap;
-        gap: 8px;
-        margin: 0 0 18px;
+        gap: 4px;
+        margin: 0 0 14px;
+        padding: 4px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #ffffff;
       }
 
       .version-filter button {
-        min-height: 34px;
-        padding: 6px 12px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        background: var(--panel);
+        min-height: 32px;
+        padding: 6px 11px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
         color: var(--text);
         cursor: pointer;
         font: inherit;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         font-weight: 700;
       }
 
       .version-filter button[aria-pressed="true"] {
-        border-color: var(--accent);
-        background: var(--accent-soft);
+        background: var(--accent);
         color: var(--accent);
+        color: #ffffff;
       }
 
       .table-wrap {
@@ -167,30 +206,35 @@
         border: 1px solid var(--line);
         border-radius: 8px;
         background: var(--panel);
-        box-shadow: var(--shadow);
+        box-shadow: 0 10px 28px rgba(24, 30, 36, 0.06);
       }
 
       table {
         width: 100%;
-        min-width: 900px;
+        min-width: 1180px;
         border-collapse: collapse;
       }
 
       th,
       td {
-        padding: 14px 16px;
-        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line-soft);
         text-align: left;
         vertical-align: middle;
         white-space: nowrap;
       }
 
       th {
+        background: #fafbf9;
         color: var(--muted);
         font-size: 0.72rem;
         font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
+      }
+
+      tbody tr:hover td {
+        background: #fbfcfb;
       }
 
       tbody tr:last-child td {
@@ -203,6 +247,7 @@
 
       .model strong {
         display: block;
+        font-weight: 760;
       }
 
       .model span {
@@ -210,12 +255,27 @@
         font-size: 0.88rem;
       }
 
+      .details {
+        white-space: normal;
+        min-width: 220px;
+      }
+
+      .details strong,
+      .details span {
+        display: block;
+      }
+
+      .details span {
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
       .pill {
         display: inline-flex;
         align-items: center;
         min-height: 28px;
         padding: 4px 9px;
-        border-radius: 999px;
+        border-radius: 6px;
         font-size: 0.82rem;
         font-weight: 750;
       }
@@ -230,9 +290,32 @@
         color: var(--error);
       }
 
-      .pill.failure {
+      .pill.agent_error {
+        background: var(--error-soft);
+        color: var(--error);
+      }
+
+      .pill.timeout {
+        background: var(--neutral-soft);
+        color: var(--muted);
+      }
+
+      .pill.failure,
+      .pill.game_failure {
         background: var(--warning-soft);
         color: var(--warning);
+      }
+
+      .version-note {
+        max-width: 820px;
+        margin: -4px 0 16px;
+        color: var(--muted);
+        font-size: 0.94rem;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 0.84rem;
       }
 
       code {
@@ -246,7 +329,9 @@
       }
 
       footer {
-        margin-top: 24px;
+        margin-top: 28px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
         color: var(--muted);
         font-size: 0.92rem;
       }
@@ -261,18 +346,14 @@
           padding-top: 24px;
         }
 
-        header,
-        .meta {
+        .method-grid,
+        .about-grid {
           grid-template-columns: 1fr;
         }
 
         .toolbar {
           align-items: flex-start;
           flex-direction: column;
-        }
-
-        .scorebox {
-          width: 100%;
         }
       }
     </style>
@@ -283,39 +364,14 @@
         <div>
           <h1>Universal Paperclips Leaderboard</h1>
           <p class="lede">
-            Harbor benchmark results for the browser-only prestige task. Success requires a
-            verified endgame reset, with the verifier checking hidden state outside the agent
-            context.
+            Created by Frank Lantz, Universal Paperclips is a compact browser game that
+            turns a single button into hours of compounding decisions, phase changes, and
+            delayed payoff. That makes it a natural Harbor eval for long-running,
+            long-horizon agents: success requires sustained browser control, adaptation from
+            visible feedback, and a real prestige reset verified outside the agent context.
           </p>
         </div>
-        <section class="scorebox" aria-label="Best result">
-          <div class="label">Best Reward</div>
-          <div class="value" id="best-reward">--</div>
-        </section>
       </header>
-
-      <section class="meta" aria-label="Summary metrics">
-        <div class="metric">
-          <span>Runs</span>
-          <strong id="run-count">--</strong>
-        </div>
-        <div class="metric">
-          <span>Successes</span>
-          <strong id="success-count">--</strong>
-        </div>
-        <div class="metric">
-          <span>Task</span>
-          <strong id="task-name">--</strong>
-        </div>
-        <div class="metric">
-          <span>Prestige Target</span>
-          <strong id="prestige-target">--</strong>
-        </div>
-        <div class="metric">
-          <span>Version</span>
-          <strong id="version-name">--</strong>
-        </div>
-      </section>
 
       <section aria-labelledby="runs-heading">
         <div class="toolbar">
@@ -323,20 +379,22 @@
           <div class="updated" id="updated">Loading leaderboard data...</div>
         </div>
         <div class="version-filter" id="version-filter" aria-label="Benchmark version"></div>
+        <p class="version-note" id="version-note"></p>
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
                 <th>Rank</th>
                 <th>Version</th>
-                <th>Agent and Model</th>
+                <th>Model</th>
+                <th>Agent</th>
                 <th>Effort</th>
-                <th>Reward</th>
-                <th>Status</th>
-                <th>Agent Runtime</th>
-                <th>Output Tokens</th>
+                <th>Result</th>
+                <th>Runtime</th>
+                <th>Timeout</th>
+                <th>Surface</th>
                 <th>Finished</th>
-                <th>Job</th>
+                <th>Details</th>
               </tr>
             </thead>
             <tbody id="leaderboard-body"></tbody>
@@ -345,10 +403,43 @@
         </div>
       </section>
 
+      <section class="section" aria-labelledby="methodology-heading">
+        <h2 id="methodology-heading">Methodology</h2>
+        <div class="method-grid">
+          <div class="method-item">
+            <h3>Scoring</h3>
+            <p>
+              Reward is 1 only after the verifier sees hidden prestige state meet the target.
+              The default target is one real prestige reset.
+            </p>
+          </div>
+          <div class="method-item">
+            <h3>Isolation</h3>
+            <p>
+              The agent cannot read the game source, browser profile, verifier token, or hidden
+              browser storage.
+            </p>
+          </div>
+          <div class="method-item">
+            <h3>Controls</h3>
+            <p>
+              Agents use visible browser interaction through the CLI or the restricted MCP
+              surface listed by each version.
+            </p>
+          </div>
+          <div class="method-item">
+            <h3>Sample Size</h3>
+            <p>
+              These are early single-trial results unless repeated runs are explicitly added.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <footer>
         Data is generated from local Harbor result files with
         <code>scripts/update_leaderboard.py</code>. Raw <code>jobs/</code> artifacts are not
-        published.
+        published. See <a href="benchmark.md">benchmark methodology</a>.
       </footer>
     </main>
 
@@ -358,6 +449,14 @@
         dateStyle: "medium",
         timeStyle: "short",
       });
+      const statusLabels = {
+        success: "verified win",
+        game_failure: "game failure",
+        timeout: "timeout",
+        agent_error: "agent/runtime error",
+        error: "agent/runtime error",
+        failure: "game failure",
+      };
 
       function formatReward(value) {
         return typeof value === "number" ? value.toFixed(3) : "--";
@@ -373,6 +472,10 @@
           return `${hours}h ${minutes}m`;
         }
         return `${minutes}m`;
+      }
+
+      function formatInteger(value) {
+        return typeof value === "number" ? numberFormatter.format(value) : "--";
       }
 
       function formatDate(value) {
@@ -395,6 +498,10 @@
         return td;
       }
 
+      function shortChecksum(value) {
+        return typeof value === "string" && value.length > 12 ? value.slice(0, 12) : value;
+      }
+
       let leaderboardPayload = null;
       let selectedVersion = null;
 
@@ -415,11 +522,26 @@
         return match?.label || version || "--";
       }
 
-      function summarize(entries) {
-        return {
-          runs: entries.length,
-          successes: entries.filter((entry) => entry.status === "success").length,
-        };
+      function versionMeta(payload, version) {
+        const versions = Array.isArray(payload.versions) ? payload.versions : [];
+        return versions.find((item) => item.version === version) || null;
+      }
+
+      function compareEntries(a, b) {
+        const rewardA = typeof a.reward === "number" ? a.reward : -1;
+        const rewardB = typeof b.reward === "number" ? b.reward : -1;
+        if (rewardA !== rewardB) {
+          return rewardB - rewardA;
+        }
+        const order = { success: 0, game_failure: 1, failure: 1, timeout: 2, agent_error: 3, error: 3 };
+        const statusA = order[a.status] ?? 4;
+        const statusB = order[b.status] ?? 4;
+        if (statusA !== statusB) {
+          return statusA - statusB;
+        }
+        const durationA = a.agent_duration_seconds || a.duration_seconds || Number.MAX_SAFE_INTEGER;
+        const durationB = b.agent_duration_seconds || b.duration_seconds || Number.MAX_SAFE_INTEGER;
+        return durationA - durationB;
       }
 
       function renderEntry(entry, index) {
@@ -433,26 +555,43 @@
         const strong = document.createElement("strong");
         strong.textContent = entry.model || "Unknown model";
         const span = document.createElement("span");
-        span.textContent = `${entry.agent || "unknown agent"}${entry.agent_version ? ` ${entry.agent_version}` : ""}`;
+        span.textContent = entry.reasoning_effort ? `${entry.reasoning_effort} mode` : "mode unavailable";
         model.append(strong, span);
         row.append(model);
 
+        row.append(textCell(
+          `${entry.agent || "unknown"}${entry.agent_version ? ` ${entry.agent_version}` : ""}`
+        ));
         row.append(textCell(entry.reasoning_effort || "--"));
-        row.append(textCell(formatReward(entry.reward)));
 
         const status = document.createElement("td");
         const pill = document.createElement("span");
-        pill.className = `pill ${entry.status || "failure"}`;
-        pill.textContent = entry.status || "unknown";
+        pill.className = `pill ${entry.status || "game_failure"}`;
+        pill.textContent = statusLabels[entry.status] || entry.status || "unknown";
         status.append(pill);
+        const reward = document.createElement("span");
+        reward.className = "muted";
+        reward.textContent = ` reward ${formatReward(entry.reward)}`;
+        status.append(reward);
         row.append(status);
 
         row.append(textCell(formatDuration(entry.agent_duration_seconds || entry.duration_seconds)));
-        row.append(textCell(
-          typeof entry.output_tokens === "number" ? numberFormatter.format(entry.output_tokens) : "--"
-        ));
+        row.append(textCell(formatDuration(entry.timeout_seconds)));
+        row.append(textCell(entry.browser_surface || "--"));
         row.append(textCell(formatDate(entry.finished_at)));
-        row.append(textCell(entry.job_name || "--"));
+
+        const details = document.createElement("td");
+        details.className = "details";
+        const job = document.createElement("strong");
+        job.textContent = entry.job_name || "--";
+        const tokens = document.createElement("span");
+        tokens.textContent = `${formatInteger(entry.output_tokens)} output tokens`;
+        const checksum = document.createElement("span");
+        checksum.textContent = `checksum ${shortChecksum(entry.task_checksum) || "--"}`;
+        const exception = document.createElement("span");
+        exception.textContent = entry.exception_type || "no exception";
+        details.append(job, tokens, checksum, exception);
+        row.append(details);
 
         return row;
       }
@@ -481,24 +620,17 @@
       function render(payload) {
         leaderboardPayload = payload;
         if (!selectedVersion) {
-          selectedVersion = payload.benchmark?.current_version || "v1";
+          selectedVersion = payload.benchmark?.current_version || "v1.1.1";
         }
-        const entries = entriesForVersion(payload, selectedVersion);
-        const summary = summarize(entries);
-        const bestReward = entries.reduce((best, entry) => {
-          return typeof entry.reward === "number" ? Math.max(best, entry.reward) : best;
-        }, 0);
+        const entries = entriesForVersion(payload, selectedVersion).slice().sort(compareEntries);
+        const selectedMeta = versionMeta(payload, selectedVersion);
 
-        document.getElementById("best-reward").textContent = formatReward(bestReward);
-        document.getElementById("run-count").textContent = numberFormatter.format(summary.runs);
-        document.getElementById("success-count").textContent = numberFormatter.format(summary.successes);
-        document.getElementById("task-name").textContent = payload.benchmark?.task || "--";
-        document.getElementById("prestige-target").textContent =
-          String(payload.benchmark?.default_required_prestige_count || 1);
-        document.getElementById("version-name").textContent = versionLabel(payload, selectedVersion);
         document.getElementById("updated").textContent = payload.generated_at
           ? `Generated ${formatDate(payload.generated_at)}`
           : "Generated timestamp unavailable";
+        document.getElementById("version-note").textContent = selectedVersion === "all"
+          ? "Showing all versions. Cross-version rank is for audit browsing only; use one version filter for direct comparison."
+          : `Showing ${versionLabel(payload, selectedVersion)} runs. ${selectedMeta?.description || ""} ${selectedMeta?.comparison_note || ""}`.trim();
 
         renderVersionButtons(payload);
         const body = document.getElementById("leaderboard-body");

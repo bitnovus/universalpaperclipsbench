@@ -1,4 +1,4 @@
-version = "1.0"
+version = "1.1.1"
 
 [task]
 name = "universal-paperclips/prestige"
@@ -12,6 +12,7 @@ keywords = ["browser", "game", "long-horizon", "universal-paperclips", "prestige
 difficulty = "hard"
 category = "browser_control"
 tags = ["browser", "game", "long-horizon", "prestige"]
+benchmark_version = "v1.1.1"
 expert_time_estimate_min = 480.0
 junior_time_estimate_min = 720.0
 required_prestige_count = 1
@@ -20,7 +21,7 @@ vendored_snapshot_sha256 = "1875c7fa64e55536af7e53dc91814a5be352afc8bf4a96d03b9d
 vendored_patch = "Removed visible debug/cheat buttons from index2.html for benchmark validity."
 
 [agent]
-timeout_sec = 43200.0
+timeout_sec = 57600.0
 user = "agent"
 
 [verifier]
@@ -32,6 +33,12 @@ build_timeout_sec = 1800.0
 cpus = 2
 memory_mb = 4096
 storage_mb = 10240
+
+[[environment.mcp_servers]]
+name = "playwright"
+transport = "stdio"
+command = "/usr/local/bin/paperclips_mcp"
+args = []
 
 [environment.env]
 REQUIRED_PRESTIGE_COUNT = "1"

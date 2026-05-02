@@ -7,6 +7,24 @@ isolated browser until a real prestige reset completes.
 
 For commands to run the benchmark, see the repository `README.md`.
 
+## Game and Motivation
+
+Universal Paperclips, created by Frank Lantz, is an incremental browser game
+about turning a tiny paperclip business into a world-consuming optimization
+loop. The early game is a simple visible UI with a paperclip button, inventory,
+pricing, and demand. Over time it expands into manufacturing, investment,
+compute allocation, strategic modeling, drone swarms, space exploration, and a
+final prestige reset after the universe has been converted.
+
+That progression makes it a useful Harbor eval because the task is easy to state
+but hard to complete robustly. A winning agent must operate a normal browser UI
+for hours, track delayed resource effects, adapt as new systems unlock, recover
+from local mistakes, and keep optimizing toward a distant objective. In other
+words, it tests both long-running execution and long-horizon agency. The eval
+does not depend on private domain knowledge or subjective judging: Harbor can
+isolate the browser surface and score success by checking hidden prestige state
+outside the agent context.
+
 The game snapshot is vendored into the Docker build context and installed at
 `/opt/paperclips-game` inside the task container. That directory is root-owned
 and not readable by the `agent` user. The static game server requires a
@@ -20,13 +38,29 @@ on the vendored game code.
 
 ## Agent Surface
 
-Agents should interact through the `browser` command only:
+The task provides a restricted Playwright-shaped MCP server named `playwright`
+when the agent runtime supports MCP. It exposes only:
+
+- `browser_snapshot`
+- `browser_take_screenshot`
+- `browser_click`
+- `browser_type`
+- `browser_select_option`
+- `browser_press_key`
+- `browser_wait_for`
+
+The MCP server wraps the same restricted browser daemon as the CLI below. It does
+not expose JavaScript evaluation, Playwright code execution, browser console,
+network logs, storage, CDP, tabs, or source inspection.
+
+Agents without MCP support should interact through the `browser` command:
 
 - `browser screenshot`
 - `browser dom`
 - `browser click --ref <ref>`
 - `browser click --text "..."`
 - `browser type --ref <ref> --text "..."`
+- `browser select --ref <ref> --label "..."`
 - `browser key <key>`
 - `browser wait <seconds>`
 
@@ -49,6 +83,14 @@ out at the transport layer.
 The task image includes common shell inspection utilities such as `jq`, but the
 agent still cannot read the game source, browser profile, verifier token, or
 hidden browser state.
+
+## Version History
+
+- `v1.1.1`: Current baseline. Adds the restricted Playwright-shaped MCP server
+  while keeping the v1.1.0 success condition and timeout.
+- `v1.1.0`: Generalized visible action instructions and a 16-hour agent timeout,
+  before MCP support.
+- `v1.0.0`: 12-hour prestige baseline after isolation and harness improvements.
 
 ## Canary Notes
 
@@ -76,6 +118,14 @@ Verifier outputs:
 - `/logs/verifier/reward.json`
 - `/logs/verifier/final_state.json`
 
+Leaderboard result labels separate gameplay outcomes from runtime issues:
+
+- `verified win`: the verifier scored reward 1.
+- `game failure`: the agent completed without earning the required prestige.
+- `timeout`: the agent reached the task time limit.
+- `agent/runtime error`: the agent process or harness exited before a clean
+  scored completion.
+
 Browser artifacts:
 
 - `/logs/browser/actions.jsonl`
@@ -86,7 +136,7 @@ Browser artifacts:
 
 ## Initial Matrix
 
-Run one 12-hour trial for each first:
+Run one 16-hour trial for each first:
 
 - Claude Code, Sonnet class matching the prior long run.
 - Codex CLI, current practical default coding model.
