@@ -106,11 +106,8 @@ Browser artifacts:
 
 ## Leaderboard
 
-The public leaderboard is published at:
-
-```text
-https://bitnovus.github.io/universalpaperclipsbench/
-```
+The public leaderboard is published at
+[bitnovus.github.io/universalpaperclipsbench](https://bitnovus.github.io/universalpaperclipsbench/).
 
 The static site lives in `docs/` and renders `docs/leaderboard.json`. Raw
 Harbor `jobs/` artifacts are ignored because they can contain transcripts,
