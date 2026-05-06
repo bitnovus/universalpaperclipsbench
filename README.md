@@ -133,7 +133,8 @@ default; pass `--include-dry-runs` only for local debugging. Benchmark versions
 are assigned in `docs/leaderboard-versions.json`; jobs not listed there default
 to the current version. The v1 line uses semver-style labels: `v1.0.0` for the
 12-hour isolated browser baseline, `v1.1.0` for the 16-hour instruction update,
-and `v1.1.1` for the restricted Playwright-shaped MCP surface.
+`v1.1.1` for the restricted Playwright-shaped MCP surface, and `v1.1.2` for
+explicit fastest-success guidance.
 
 The included workflow publishes `docs/` through GitHub Actions and configures
 GitHub Pages for the repository.

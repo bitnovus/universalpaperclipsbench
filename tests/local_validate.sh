@@ -48,8 +48,8 @@ for py_file in "${python_files[@]}"; do
 done
 
 python3 -c "import ast, pathlib; ast.parse(pathlib.Path('scripts/update_leaderboard.py').read_text(encoding='utf-8'))"
-python3 -c "import json, pathlib; data=json.loads(pathlib.Path('docs/leaderboard.json').read_text(encoding='utf-8')); assert data['benchmark']['task'] == 'universal-paperclips/prestige'; assert data['benchmark']['current_version'] == 'v1.1.1'; assert isinstance(data['entries'], list)"
-python3 -c "import json, pathlib; data=json.loads(pathlib.Path('docs/leaderboard-versions.json').read_text(encoding='utf-8')); assert data.get('current_version') == 'v1.1.1'; assert isinstance(data.get('versions'), list)"
+python3 -c "import json, pathlib; data=json.loads(pathlib.Path('docs/leaderboard.json').read_text(encoding='utf-8')); assert data['benchmark']['task'] == 'universal-paperclips/prestige'; assert data['benchmark']['current_version'] == 'v1.1.2'; assert isinstance(data['entries'], list)"
+python3 -c "import json, pathlib; data=json.loads(pathlib.Path('docs/leaderboard-versions.json').read_text(encoding='utf-8')); assert data.get('current_version') == 'v1.1.2'; assert isinstance(data.get('versions'), list)"
 
 PYTHONDONTWRITEBYTECODE=1 bash scripts/run_verifier_fixtures.sh
 

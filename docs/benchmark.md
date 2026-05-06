@@ -86,8 +86,10 @@ hidden browser state.
 
 ## Version History
 
-- `v1.1.1`: Current baseline. Adds the restricted Playwright-shaped MCP server
-  while keeping the v1.1.0 success condition and timeout.
+- `v1.1.2`: Current baseline. Adds explicit fastest-success guidance and
+  stalled-strategy reassessment to the v1.1.1 restricted MCP surface.
+- `v1.1.1`: Adds the restricted Playwright-shaped MCP server while keeping the
+  v1.1.0 success condition and timeout.
 - `v1.1.0`: Generalized visible action instructions and a 16-hour agent timeout,
   before MCP support.
 - `v1.0.0`: 12-hour prestige baseline after isolation and harness improvements.

@@ -591,7 +591,15 @@
         checksum.textContent = `checksum ${shortChecksum(entry.task_checksum) || "--"}`;
         const exception = document.createElement("span");
         exception.textContent = entry.exception_type || "no exception";
-        details.append(job, tokens, checksum, exception);
+        details.append(job);
+        if (Array.isArray(entry.run_notes)) {
+          for (const note of entry.run_notes) {
+            const noteElement = document.createElement("span");
+            noteElement.textContent = note;
+            details.append(noteElement);
+          }
+        }
+        details.append(tokens, checksum, exception);
         row.append(details);
 
         return row;

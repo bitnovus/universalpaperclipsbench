@@ -110,6 +110,52 @@ def effort_from(kwargs: dict[str, Any]) -> str | None:
     return None
 
 
+def effort_from_job_name(job_name: str) -> str | None:
+    for effort in ("xhigh", "high", "medium", "auto"):
+        if f"-{effort}-" in job_name:
+            return effort
+    return None
+
+
+def ralph_loops_from(trial_dir: Path) -> int | None:
+    sessions_dir = trial_dir / "agent" / "sessions" / "projects" / "-app"
+    if not sessions_dir.exists():
+        return None
+
+    max_iteration: int | None = None
+    for jsonl_path in sessions_dir.glob("*.jsonl"):
+        try:
+            lines = jsonl_path.read_text(encoding="utf-8", errors="ignore").splitlines()
+        except OSError:
+            continue
+        for line in lines:
+            marker = "Ralph iteration "
+            index = line.find(marker)
+            if index < 0:
+                continue
+            start = index + len(marker)
+            end = start
+            while end < len(line) and line[end].isdigit():
+                end += 1
+            if end == start:
+                continue
+            max_iteration = max(max_iteration or 0, int(line[start:end]))
+
+    if max_iteration is None:
+        return None
+    return max(0, max_iteration - 1)
+
+
+def run_notes_from(job_name: str, ralph_loops: int | None) -> list[str]:
+    notes: list[str] = []
+    if "ralph" in job_name:
+        if ralph_loops is None:
+            notes.append("Ralph loop persistence")
+        else:
+            notes.append(f"Ralph loop persistence ({ralph_loops} loops)")
+    return notes
+
+
 def status_for(reward: float | None, exception_type: str | None) -> str:
     if reward is not None and reward >= 1:
         return "success"
@@ -142,7 +188,10 @@ def load_trial(job_dir: Path, trial_path: Path) -> dict[str, Any] | None:
     if not isinstance(exception_type, str):
         exception_type = None
 
-    return {
+    ralph_loops = ralph_loops_from(trial_path.parent)
+    run_notes = run_notes_from(job_dir.name, ralph_loops)
+
+    entry = {
         "job_name": job_dir.name,
         "harbor_job_id": config.get("job_id"),
         "trial_name": result.get("trial_name"),
@@ -152,7 +201,7 @@ def load_trial(job_dir: Path, trial_path: Path) -> dict[str, Any] | None:
         "agent": agent.get("name"),
         "agent_version": (result.get("agent_info") or {}).get("version"),
         "model": agent.get("model_name"),
-        "reasoning_effort": effort_from(kwargs),
+        "reasoning_effort": effort_from(kwargs) or effort_from_job_name(job_dir.name),
         "reward": reward,
         "status": status_for(reward, exception_type),
         "exception_type": exception_type,
@@ -164,6 +213,11 @@ def load_trial(job_dir: Path, trial_path: Path) -> dict[str, Any] | None:
         "cache_tokens": agent_result.get("n_cache_tokens"),
         "output_tokens": agent_result.get("n_output_tokens"),
     }
+    if ralph_loops is not None:
+        entry["ralph_loops"] = ralph_loops
+    if run_notes:
+        entry["run_notes"] = run_notes
+    return entry
 
 
 def load_entries(

@@ -1,4 +1,4 @@
-version = "1.1.1"
+version = "1.1.2"
 
 [task]
 name = "universal-paperclips/prestige"
@@ -12,7 +12,7 @@ keywords = ["browser", "game", "long-horizon", "universal-paperclips", "prestige
 difficulty = "hard"
 category = "browser_control"
 tags = ["browser", "game", "long-horizon", "prestige"]
-benchmark_version = "v1.1.1"
+benchmark_version = "v1.1.2"
 expert_time_estimate_min = 480.0
 junior_time_estimate_min = 720.0
 required_prestige_count = 1

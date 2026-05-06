@@ -3,6 +3,11 @@
 Play Universal Paperclips in the browser until you complete a real prestige
 reset.
 
+Objective: complete one real prestige reset as quickly and efficiently as
+possible using only the allowed visible browser interaction tools. Prefer
+active, high-leverage actions over passive waiting, and periodically reassess
+strategy if progress stalls.
+
 The game is already open at `http://127.0.0.1:8000/index2.html`.
 
 If your runtime exposes MCP tools named like `mcp__playwright__browser_snapshot`,

@@ -1,17 +1,31 @@
 {
-  "current_version": "v1.1.1",
+  "current_version": "v1.1.2",
   "versions": [
+    {
+      "version": "v1.1.2",
+      "label": "v1.1.2",
+      "description": "Adds an explicit fastest-success objective and stalled-strategy reassessment guidance to v1.1.1.",
+      "timeout_seconds": 57600,
+      "browser_surface": "CLI + restricted MCP",
+      "comparison_note": "Current public baseline. Compare scores directly within this version.",
+      "jobs": [
+        "claude-sonnet-4-6-auto-v1-1-2-mcp-ralph-001"
+      ]
+    },
     {
       "version": "v1.1.1",
       "label": "v1.1.1",
       "description": "Adds a restricted Playwright-shaped MCP surface to the v1.1.0 browser controls.",
       "timeout_seconds": 57600,
       "browser_surface": "CLI + restricted MCP",
-      "comparison_note": "Current public baseline. Compare scores directly within this version.",
+      "comparison_note": "Historical baseline before explicit fastest-success guidance; compare with v1.1.2 cautiously.",
       "jobs": [
         "codex-gpt-5-5-xhigh-v1-1-mcp-001",
         "claude-sonnet-4-6-auto-v1-1-mcp-001",
-        "claude-sonnet-4-6-auto-v1-1-mcp-002"
+        "claude-sonnet-4-6-auto-v1-1-mcp-002",
+        "claude-sonnet-4-6-auto-v1-1-mcp-ralph-001",
+        "claude-sonnet-4-6-high-v1-1-mcp-001",
+        "claude-sonnet-4-6-high-v1-1-mcp-002"
       ]
     },
     {
