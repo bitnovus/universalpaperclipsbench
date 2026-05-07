@@ -369,6 +369,13 @@
         font-size: 0.84rem;
       }
 
+      .result-meta {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
       code {
         font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
         font-size: 0.9em;
@@ -561,6 +568,23 @@
         return typeof value === "string" && value.length > 12 ? value.slice(0, 12) : value;
       }
 
+      function verifiedPrestigeText(entry) {
+        if (typeof entry.verified_prestige_count !== "number") {
+          return null;
+        }
+        const required = typeof entry.required_prestige_count === "number"
+          ? entry.required_prestige_count
+          : "--";
+        return `verified prestige ${entry.verified_prestige_count}/${required}`;
+      }
+
+      function visiblePrestigeText(entry) {
+        if (!entry.visible_prestige_u && !entry.visible_prestige_s) {
+          return null;
+        }
+        return `visible counters U/S ${entry.visible_prestige_u || "--"}/${entry.visible_prestige_s || "--"}`;
+      }
+
       let leaderboardPayload = null;
       let selectedVersion = null;
 
@@ -628,9 +652,23 @@
         pill.textContent = statusLabels[entry.status] || entry.status || "unknown";
         status.append(pill);
         const reward = document.createElement("span");
-        reward.className = "muted";
+        reward.className = "result-meta";
         reward.textContent = ` reward ${formatReward(entry.reward)}`;
         status.append(reward);
+        const verifiedPrestige = verifiedPrestigeText(entry);
+        if (verifiedPrestige) {
+          const verified = document.createElement("span");
+          verified.className = "result-meta";
+          verified.textContent = verifiedPrestige;
+          status.append(verified);
+        }
+        const visiblePrestige = visiblePrestigeText(entry);
+        if (visiblePrestige) {
+          const visible = document.createElement("span");
+          visible.className = "result-meta";
+          visible.textContent = visiblePrestige;
+          status.append(visible);
+        }
         row.append(status);
 
         const details = document.createElement("td");

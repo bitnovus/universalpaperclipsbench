@@ -23,15 +23,21 @@
       "model": "gpt-5.5",
       "output_tokens": 281638,
       "reasoning_effort": "xhigh",
+      "required_prestige_count": 1,
       "reward": 1.0,
       "screenshot": "assets/runs/codex-gpt-5-5-xhigh-v1-1-2-mcp-001.png",
       "started_at": "2026-05-06T15:50:04.165563Z",
       "status": "success",
+      "stored_prestige_s": 0,
+      "stored_prestige_u": 1,
       "task": "universal-paperclips/prestige",
       "task_checksum": "e2b060d25a5a8153b4e3797568838bb3b3504a053f8d6aac18038af61b70323a",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 57600,
-      "trial_name": "prestige__mrndSE4"
+      "trial_name": "prestige__mrndSE4",
+      "verified_prestige_count": 1,
+      "visible_prestige_s": "1",
+      "visible_prestige_u": "2"
     },
     {
       "agent": "codex",
@@ -49,15 +55,21 @@
       "model": "gpt-5.5",
       "output_tokens": 155106,
       "reasoning_effort": "high",
+      "required_prestige_count": 1,
       "reward": 1.0,
       "screenshot": "assets/runs/codex-gpt-5-5-high-001.png",
       "started_at": "2026-04-30T00:36:24.954513Z",
       "status": "success",
+      "stored_prestige_s": 1,
+      "stored_prestige_u": 0,
       "task": "universal-paperclips/prestige",
       "task_checksum": "4da79cd5799c9abbd55b86069d84f179e6880f034a290632274f685a18be748e",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 43200,
-      "trial_name": "prestige__JAS4Cnb"
+      "trial_name": "prestige__JAS4Cnb",
+      "verified_prestige_count": 1,
+      "visible_prestige_s": "2",
+      "visible_prestige_u": "1"
     },
     {
       "agent": "codex",
@@ -75,15 +87,21 @@
       "model": "gpt-5.5",
       "output_tokens": 277697,
       "reasoning_effort": "xhigh",
+      "required_prestige_count": 1,
       "reward": 1.0,
       "screenshot": "assets/runs/codex-gpt-5-5-xhigh-v1-1-mcp-001.png",
       "started_at": "2026-05-01T14:49:50.862927Z",
       "status": "success",
+      "stored_prestige_s": 1,
+      "stored_prestige_u": 0,
       "task": "universal-paperclips/prestige",
       "task_checksum": "f6b3a06d4bc9b0c223035499d2c00c43067b2e380d4c373986753b9202744ae4",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 57600,
-      "trial_name": "prestige__bJFqrCe"
+      "trial_name": "prestige__bJFqrCe",
+      "verified_prestige_count": 1,
+      "visible_prestige_s": "2",
+      "visible_prestige_u": "1"
     },
     {
       "agent": "claude-code",
@@ -102,6 +120,7 @@
       "output_tokens": 1517154,
       "ralph_loops": 13,
       "reasoning_effort": "auto",
+      "required_prestige_count": 1,
       "reward": 1.0,
       "run_notes": [
         "Ralph loop persistence (13 loops)"
@@ -109,11 +128,16 @@
       "screenshot": "assets/runs/claude-sonnet-4-6-auto-v1-1-2-mcp-ralph-001.png",
       "started_at": "2026-05-05T14:56:30.021830Z",
       "status": "success",
+      "stored_prestige_s": 1,
+      "stored_prestige_u": 0,
       "task": "universal-paperclips/prestige",
       "task_checksum": "e2b060d25a5a8153b4e3797568838bb3b3504a053f8d6aac18038af61b70323a",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 57600,
-      "trial_name": "prestige__WKEkrm6"
+      "trial_name": "prestige__WKEkrm6",
+      "verified_prestige_count": 1,
+      "visible_prestige_s": "2",
+      "visible_prestige_u": "1"
     },
     {
       "agent": "claude-code",
@@ -131,6 +155,7 @@
       "model": "claude-sonnet-4-6",
       "output_tokens": 194614,
       "reasoning_effort": "high",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "screenshot": "assets/runs/claude-sonnet-4-6-high-v1-1-mcp-002.png",
       "started_at": "2026-05-02T04:51:48.484139Z",
@@ -139,7 +164,10 @@
       "task_checksum": "0c9a7b4426406bdb822fe084bfebea69a864af89de70f93c94cd5ba1767b4050",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 57600,
-      "trial_name": "prestige__TVdvdSB"
+      "trial_name": "prestige__TVdvdSB",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "claude-code",
@@ -157,6 +185,7 @@
       "model": "claude-sonnet-4-6",
       "output_tokens": 544623,
       "reasoning_effort": "auto",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "screenshot": "assets/runs/claude-sonnet-4-6-auto-v1-1-mcp-002.png",
       "started_at": "2026-05-01T14:55:16.903770Z",
@@ -165,7 +194,10 @@
       "task_checksum": "f6b3a06d4bc9b0c223035499d2c00c43067b2e380d4c373986753b9202744ae4",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 57600,
-      "trial_name": "prestige__KRNDGwL"
+      "trial_name": "prestige__KRNDGwL",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "codex",
@@ -183,6 +215,7 @@
       "model": "gpt-5.5",
       "output_tokens": 46200,
       "reasoning_effort": "medium",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "screenshot": "assets/runs/codex-gpt-5-5-medium-v1-001.png",
       "started_at": "2026-04-30T14:19:03.410870Z",
@@ -191,7 +224,10 @@
       "task_checksum": "4da79cd5799c9abbd55b86069d84f179e6880f034a290632274f685a18be748e",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 43200,
-      "trial_name": "prestige__as7MNHX"
+      "trial_name": "prestige__as7MNHX",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "codex",
@@ -209,6 +245,7 @@
       "model": "gpt-5.5",
       "output_tokens": 325268,
       "reasoning_effort": "xhigh",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "screenshot": "assets/runs/codex-gpt-5-5-xhigh-v1-001.png",
       "started_at": "2026-04-30T15:21:45.976797Z",
@@ -217,7 +254,10 @@
       "task_checksum": "4da79cd5799c9abbd55b86069d84f179e6880f034a290632274f685a18be748e",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 43200,
-      "trial_name": "prestige__HXa3xRp"
+      "trial_name": "prestige__HXa3xRp",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "claude-code",
@@ -235,6 +275,7 @@
       "model": "claude-sonnet-4-6",
       "output_tokens": 804153,
       "reasoning_effort": "auto",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "screenshot": "assets/runs/claude-sonnet-4-6-auto-v1-002.png",
       "started_at": "2026-04-30T16:15:48.078151Z",
@@ -243,7 +284,10 @@
       "task_checksum": "4da79cd5799c9abbd55b86069d84f179e6880f034a290632274f685a18be748e",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 43200,
-      "trial_name": "prestige__jFPeYgU"
+      "trial_name": "prestige__jFPeYgU",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "codex",
@@ -261,6 +305,7 @@
       "model": "gpt-5.5",
       "output_tokens": null,
       "reasoning_effort": "medium",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "started_at": "2026-04-29T16:25:37.876227Z",
       "status": "agent_error",
@@ -268,7 +313,10 @@
       "task_checksum": "3cf5ac52495d43d37b1e20c374a758413498a66d7ef073f9577f91ae615938ce",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 43200,
-      "trial_name": "prestige__ZVUHWHa"
+      "trial_name": "prestige__ZVUHWHa",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "claude-code",
@@ -286,6 +334,7 @@
       "model": "claude-sonnet-4-6",
       "output_tokens": 0,
       "reasoning_effort": "high",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "started_at": "2026-05-02T04:50:31.009509Z",
       "status": "agent_error",
@@ -293,7 +342,10 @@
       "task_checksum": "0c9a7b4426406bdb822fe084bfebea69a864af89de70f93c94cd5ba1767b4050",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 57600,
-      "trial_name": "prestige__mkMKsaC"
+      "trial_name": "prestige__mkMKsaC",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "claude-code",
@@ -311,6 +363,7 @@
       "model": "claude-sonnet-4-6",
       "output_tokens": 0,
       "reasoning_effort": "auto",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "started_at": "2026-05-01T14:49:50.862927Z",
       "status": "agent_error",
@@ -318,7 +371,10 @@
       "task_checksum": "f6b3a06d4bc9b0c223035499d2c00c43067b2e380d4c373986753b9202744ae4",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 57600,
-      "trial_name": "prestige__goZcTJN"
+      "trial_name": "prestige__goZcTJN",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "claude-code",
@@ -336,6 +392,7 @@
       "model": "claude-sonnet-4-6",
       "output_tokens": 0,
       "reasoning_effort": "auto",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "started_at": "2026-04-30T15:53:14.451019Z",
       "status": "agent_error",
@@ -343,7 +400,10 @@
       "task_checksum": "4da79cd5799c9abbd55b86069d84f179e6880f034a290632274f685a18be748e",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 43200,
-      "trial_name": "prestige__sVXfFtu"
+      "trial_name": "prestige__sVXfFtu",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "claude-code",
@@ -361,6 +421,7 @@
       "model": "claude-sonnet-4-6",
       "output_tokens": 261574,
       "reasoning_effort": "auto",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "screenshot": "assets/runs/claude-sonnet-4-6-auto-v1-1-001.png",
       "started_at": "2026-05-01T05:10:04.185432Z",
@@ -369,7 +430,10 @@
       "task_checksum": "d556ab7137504eb5485ae9fc5d5b1e5b06886efd60adb0475f3b52faf67fecd4",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 57600,
-      "trial_name": "prestige__XgztZ5r"
+      "trial_name": "prestige__XgztZ5r",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "claude-code",
@@ -388,6 +452,7 @@
       "output_tokens": 1104329,
       "ralph_loops": 3,
       "reasoning_effort": "auto",
+      "required_prestige_count": 1,
       "reward": 0.0,
       "run_notes": [
         "Ralph loop persistence (3 loops)"
@@ -399,7 +464,10 @@
       "task_checksum": "0c9a7b4426406bdb822fe084bfebea69a864af89de70f93c94cd5ba1767b4050",
       "task_path": "datasets/universal-paperclips/prestige",
       "timeout_seconds": 57600,
-      "trial_name": "prestige__2KSvKhm"
+      "trial_name": "prestige__2KSvKhm",
+      "verified_prestige_count": 0,
+      "visible_prestige_s": "0",
+      "visible_prestige_u": "0"
     },
     {
       "agent": "codex",
@@ -480,7 +548,7 @@
       "trial_name": "prestige__jf6MP2U"
     }
   ],
-  "generated_at": "2026-05-07T00:53:47.332429Z",
+  "generated_at": "2026-05-07T01:10:16.254690Z",
   "source": "local Harbor job result.json files",
   "summary": {
     "agent_errors": 9,

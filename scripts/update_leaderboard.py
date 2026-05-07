@@ -172,6 +172,39 @@ def status_for(reward: float | None, exception_type: str | None) -> str:
     return "game_failure"
 
 
+def verifier_fields_from(trial_dir: Path) -> dict[str, Any]:
+    fields: dict[str, Any] = {}
+
+    reward = read_json(trial_dir / "verifier" / "reward.json")
+    if reward:
+        prestige_count = reward.get("prestige_count")
+        required_count = reward.get("required_prestige_count")
+        if isinstance(prestige_count, int | float):
+            fields["verified_prestige_count"] = int(prestige_count)
+        if isinstance(required_count, int | float):
+            fields["required_prestige_count"] = int(required_count)
+
+    final_state = read_json(trial_dir / "verifier" / "final_state.json")
+    if final_state:
+        visible_u = final_state.get("visiblePrestigeU")
+        visible_s = final_state.get("visiblePrestigeS")
+        if isinstance(visible_u, str):
+            fields["visible_prestige_u"] = visible_u
+        if isinstance(visible_s, str):
+            fields["visible_prestige_s"] = visible_s
+
+        save_prestige = final_state.get("savePrestige")
+        if isinstance(save_prestige, dict):
+            stored_u = save_prestige.get("prestigeU")
+            stored_s = save_prestige.get("prestigeS")
+            if isinstance(stored_u, int | float):
+                fields["stored_prestige_u"] = int(stored_u)
+            if isinstance(stored_s, int | float):
+                fields["stored_prestige_s"] = int(stored_s)
+
+    return fields
+
+
 def load_trial(job_dir: Path, trial_path: Path) -> dict[str, Any] | None:
     result = read_json(trial_path)
     if not result:
@@ -223,6 +256,7 @@ def load_trial(job_dir: Path, trial_path: Path) -> dict[str, Any] | None:
         entry["ralph_loops"] = ralph_loops
     if run_notes:
         entry["run_notes"] = run_notes
+    entry.update(verifier_fields_from(trial_path.parent))
     return entry
 
 
