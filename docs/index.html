@@ -607,13 +607,6 @@
         return `verified prestige ${entry.verified_prestige_count}/${required}`;
       }
 
-      function visiblePrestigeText(entry) {
-        if (!entry.visible_prestige_u && !entry.visible_prestige_s) {
-          return null;
-        }
-        return `visible counters U/S ${entry.visible_prestige_u || "--"}/${entry.visible_prestige_s || "--"}`;
-      }
-
       function hasEndState(entry) {
         return typeof entry.verified_prestige_count === "number"
           || entry.visible_prestige_u
@@ -631,6 +624,36 @@
         const dd = document.createElement("dd");
         dd.textContent = value;
         list.append(dt, dd);
+      }
+
+      function resetPathText(entry) {
+        const universe = typeof entry.stored_prestige_u === "number" ? entry.stored_prestige_u : 0;
+        const simulated = typeof entry.stored_prestige_s === "number" ? entry.stored_prestige_s : 0;
+        if (universe > 0 && simulated > 0) {
+          return "mixed prestige counters";
+        }
+        if (universe > 0) {
+          return "Universe Next Door";
+        }
+        if (simulated > 0) {
+          return "Universe Within";
+        }
+        if (typeof entry.verified_prestige_count === "number") {
+          return "no prestige reset observed";
+        }
+        return null;
+      }
+
+      function verifierOutcomeText(entry) {
+        if (typeof entry.verified_prestige_count !== "number") {
+          return null;
+        }
+        const required = typeof entry.required_prestige_count === "number"
+          ? entry.required_prestige_count
+          : 1;
+        return entry.verified_prestige_count >= required
+          ? "post-reset prestige state observed"
+          : "required prestige state not observed";
       }
 
       let leaderboardPayload = null;
@@ -710,13 +733,6 @@
           verified.textContent = verifiedPrestige;
           status.append(verified);
         }
-        const visiblePrestige = visiblePrestigeText(entry);
-        if (visiblePrestige) {
-          const visible = document.createElement("span");
-          visible.className = "result-meta";
-          visible.textContent = visiblePrestige;
-          status.append(visible);
-        }
         row.append(status);
 
         const details = document.createElement("td");
@@ -750,12 +766,12 @@
           const summary = document.createElement("summary");
           summary.textContent = "end state";
           const list = document.createElement("dl");
-          appendDefinition(list, "Reward", formatReward(entry.reward));
-          appendDefinition(list, "Prestige", verifiedPrestigeText(entry));
-          appendDefinition(list, "Visible U/S", `${entry.visible_prestige_u || "--"}/${entry.visible_prestige_s || "--"}`);
+          appendDefinition(list, "Verifier", verifierOutcomeText(entry));
+          appendDefinition(list, "Reset path", resetPathText(entry));
           if (typeof entry.stored_prestige_u === "number" || typeof entry.stored_prestige_s === "number") {
-            appendDefinition(list, "Stored U/S", `${entry.stored_prestige_u ?? "--"}/${entry.stored_prestige_s ?? "--"}`);
+            appendDefinition(list, "Hidden state U/S", `${entry.stored_prestige_u ?? "--"}/${entry.stored_prestige_s ?? "--"}`);
           }
+          appendDefinition(list, "Visible UI U/S", `${entry.visible_prestige_u || "--"}/${entry.visible_prestige_s || "--"}`);
           endState.append(summary, list);
           details.append(endState);
         }
