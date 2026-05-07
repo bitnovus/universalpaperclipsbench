@@ -3,3 +3,8 @@ jobs/
 __pycache__/
 *.py[cod]
 .DS_Store
+.playwright-mcp/
+/*.log
+/leaderboard-*-preview.png
+/prod-*.md
+/prod-*.png
