@@ -47,8 +47,24 @@
       }
 
       header {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+        justify-content: space-between;
         padding-bottom: 16px;
         border-bottom: 1px solid var(--line);
+      }
+
+      .header-mark {
+        flex: 0 0 auto;
+        margin-top: 4px;
+        color: var(--accent);
+        font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+        font-size: clamp(4rem, 13vw, 9rem);
+        line-height: 0.82;
+        opacity: 0.9;
+        transform: rotate(-8deg);
+        user-select: none;
       }
 
       .eyebrow {
@@ -443,6 +459,14 @@
           align-items: flex-start;
           flex-direction: column;
         }
+
+        header {
+          display: block;
+        }
+
+        .header-mark {
+          display: none;
+        }
       }
     </style>
   </head>
@@ -459,6 +483,7 @@
             visible feedback, and a real prestige reset verified outside the agent context.
           </p>
         </div>
+        <div class="header-mark" aria-hidden="true">📎</div>
       </header>
 
       <section aria-labelledby="runs-heading">
