@@ -385,7 +385,7 @@
             <thead>
               <tr>
                 <th>Rank</th>
-                <th>Version</th>
+                <th>Details</th>
                 <th>Model</th>
                 <th>Agent</th>
                 <th>Effort</th>
@@ -394,7 +394,7 @@
                 <th>Timeout</th>
                 <th>Surface</th>
                 <th>Finished</th>
-                <th>Details</th>
+                <th>Version</th>
               </tr>
             </thead>
             <tbody id="leaderboard-body"></tbody>
@@ -549,7 +549,27 @@
         const row = document.createElement("tr");
 
         row.append(textCell(String(index + 1)));
-        row.append(textCell(entry.benchmark_version || "--"));
+
+        const details = document.createElement("td");
+        details.className = "details";
+        const job = document.createElement("strong");
+        job.textContent = entry.job_name || "--";
+        const tokens = document.createElement("span");
+        tokens.textContent = `${formatInteger(entry.output_tokens)} output tokens`;
+        const checksum = document.createElement("span");
+        checksum.textContent = `checksum ${shortChecksum(entry.task_checksum) || "--"}`;
+        const exception = document.createElement("span");
+        exception.textContent = entry.exception_type || "no exception";
+        details.append(job);
+        if (Array.isArray(entry.run_notes)) {
+          for (const note of entry.run_notes) {
+            const noteElement = document.createElement("span");
+            noteElement.textContent = note;
+            details.append(noteElement);
+          }
+        }
+        details.append(tokens, checksum, exception);
+        row.append(details);
 
         const model = document.createElement("td");
         model.className = "model";
@@ -580,27 +600,7 @@
         row.append(textCell(formatDuration(entry.timeout_seconds)));
         row.append(textCell(entry.browser_surface || "--"));
         row.append(textCell(formatDate(entry.finished_at)));
-
-        const details = document.createElement("td");
-        details.className = "details";
-        const job = document.createElement("strong");
-        job.textContent = entry.job_name || "--";
-        const tokens = document.createElement("span");
-        tokens.textContent = `${formatInteger(entry.output_tokens)} output tokens`;
-        const checksum = document.createElement("span");
-        checksum.textContent = `checksum ${shortChecksum(entry.task_checksum) || "--"}`;
-        const exception = document.createElement("span");
-        exception.textContent = entry.exception_type || "no exception";
-        details.append(job);
-        if (Array.isArray(entry.run_notes)) {
-          for (const note of entry.run_notes) {
-            const noteElement = document.createElement("span");
-            noteElement.textContent = note;
-            details.append(noteElement);
-          }
-        }
-        details.append(tokens, checksum, exception);
-        row.append(details);
+        row.append(textCell(entry.benchmark_version || "--"));
 
         return row;
       }
