@@ -48,20 +48,24 @@
 
       header {
         display: flex;
-        gap: 24px;
+        gap: clamp(24px, 4vw, 64px);
         align-items: flex-start;
         justify-content: space-between;
-        padding-bottom: 16px;
+        padding: 8px 4px 20px 0;
         border-bottom: 1px solid var(--line);
       }
 
       .header-mark {
+        display: grid;
+        min-width: clamp(120px, 18vw, 190px);
         flex: 0 0 auto;
-        margin-top: 4px;
+        margin: 2px 4px 0 0;
+        padding: 10px 10px 12px;
+        place-items: center;
         color: var(--accent);
         font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
-        font-size: clamp(4rem, 13vw, 9rem);
-        line-height: 0.82;
+        font-size: clamp(4.25rem, 10vw, 8rem);
+        line-height: 1;
         opacity: 0.9;
         transform: rotate(-8deg);
         user-select: none;
