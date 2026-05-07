@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Universal Paperclips Benchmark Leaderboard</title>
+    <title>Universal Paperclips Benchmark</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -90,9 +91,9 @@
 
       h1 {
         margin: 0;
-        max-width: 820px;
-        font-size: clamp(2.15rem, 5vw, 3.85rem);
-        line-height: 0.94;
+        max-width: 760px;
+        font-size: clamp(2rem, 4.5vw, 3.35rem);
+        line-height: 0.98;
         letter-spacing: 0;
       }
 
@@ -101,6 +102,25 @@
         max-width: 760px;
         color: var(--muted);
         font-size: clamp(1rem, 1.8vw, 1.12rem);
+      }
+
+      .benchmark-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .benchmark-badges li {
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel);
+        color: var(--text);
+        font-size: 0.84rem;
+        font-weight: 700;
       }
 
       .toolbar {
@@ -239,8 +259,16 @@
 
       table {
         width: 100%;
-        min-width: 1180px;
+        min-width: 980px;
         border-collapse: collapse;
+      }
+
+      body.show-all table {
+        min-width: 1180px;
+      }
+
+      body:not(.show-all) .all-only {
+        display: none;
       }
 
       th,
@@ -421,6 +449,24 @@
         font-size: 0.94rem;
       }
 
+      .audit-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+
+      .audit-links a {
+        padding: 7px 10px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--panel);
+        font-size: 0.88rem;
+        text-decoration: none;
+      }
+
       .muted {
         color: var(--muted);
         font-size: 0.84rem;
@@ -486,7 +532,7 @@
     <main>
       <header>
         <div>
-          <h1>Universal Paperclips Leaderboard</h1>
+          <h1>Universal Paperclips Benchmark</h1>
           <p class="lede">
             Created by Frank Lantz, Universal Paperclips is a compact browser game that
             turns a single button into hours of compounding decisions, phase changes, and
@@ -495,6 +541,12 @@
             long-horizon agents: success requires sustained browser control, adaptation from
             visible feedback, and a real prestige reset verified outside the agent context.
           </p>
+          <ul class="benchmark-badges" aria-label="Benchmark summary">
+            <li>Harbor benchmark</li>
+            <li>Browser-only game task</li>
+            <li>v1.1.2 public baseline</li>
+            <li>16h timeout</li>
+          </ul>
         </div>
         <div class="header-mark" aria-hidden="true">📎</div>
       </header>
@@ -519,8 +571,8 @@
                 <th>Runtime</th>
                 <th>Timeout</th>
                 <th>Surface</th>
-                <th>Finished</th>
-                <th>Version</th>
+                <th class="all-only">Finished</th>
+                <th class="all-only">Version</th>
               </tr>
             </thead>
             <tbody id="leaderboard-body"></tbody>
@@ -541,7 +593,7 @@
           <div class="method-item">
             <h3>Scoring</h3>
             <p>
-              Reward is 1 only after the verifier sees hidden prestige state meet the target.
+              Reward is 1 only after a verifier sees hidden prestige state meet the target.
               The default target is one real prestige reset.
             </p>
           </div>
@@ -565,6 +617,13 @@
               These are early single-trial results unless repeated runs are explicitly added.
             </p>
           </div>
+        </div>
+        <div class="audit-links" aria-label="Reproducibility links">
+          <a href="benchmark.md">Benchmark Methodology</a>
+          <a href="isolation.md">Isolation Model</a>
+          <a href="leaderboard.json">Leaderboard JSON</a>
+          <a href="https://github.com/bitnovus/universalpaperclipsbench/blob/main/datasets/universal-paperclips/prestige/instruction.md">Task Instructions</a>
+          <a href="https://github.com/bitnovus/universalpaperclipsbench/blob/main/datasets/universal-paperclips/prestige/environment/bin/paperclips_verify.py">Verifier Source</a>
         </div>
       </section>
 
@@ -819,8 +878,8 @@
         row.append(textCell(formatDuration(entry.agent_duration_seconds || entry.duration_seconds)));
         row.append(textCell(formatDuration(entry.timeout_seconds)));
         row.append(textCell(entry.browser_surface || "--"));
-        row.append(textCell(formatDate(entry.finished_at)));
-        row.append(textCell(entry.benchmark_version || "--"));
+        row.append(textCell(formatDate(entry.finished_at), "all-only"));
+        row.append(textCell(entry.benchmark_version || "--", "all-only"));
 
         return row;
       }
@@ -886,13 +945,14 @@
         }
         const entries = entriesForVersion(payload, selectedVersion).slice().sort(compareEntries);
         const selectedMeta = versionMeta(payload, selectedVersion);
+        document.body.classList.toggle("show-all", selectedVersion === "all");
 
         document.getElementById("updated").textContent = payload.generated_at
           ? `Generated ${formatDate(payload.generated_at)}`
           : "Generated timestamp unavailable";
         document.getElementById("version-note").textContent = selectedVersion === "all"
-          ? "Showing all versions. Cross-version rank is for audit browsing only. Results are early single trials unless otherwise stated."
-          : `Showing ${versionLabel(payload, selectedVersion)} runs. Results are early single trials unless otherwise stated. ${selectedMeta?.description || ""} ${selectedMeta?.comparison_note || ""}`.trim();
+          ? "Showing all versions. Cross-version rank is for audit browsing only. Initial public results are single-run trials unless otherwise stated."
+          : `Showing ${versionLabel(payload, selectedVersion)} runs. Initial public results are single-run trials unless otherwise stated. ${selectedMeta?.description || ""} ${selectedMeta?.comparison_note || ""}`.trim();
 
         renderVersionButtons(payload);
         const body = document.getElementById("leaderboard-body");
