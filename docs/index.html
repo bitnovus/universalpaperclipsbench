@@ -385,10 +385,10 @@
             <thead>
               <tr>
                 <th>Rank</th>
-                <th>Details</th>
                 <th>Model</th>
                 <th>Agent</th>
                 <th>Effort</th>
+                <th>Details</th>
                 <th>Result</th>
                 <th>Runtime</th>
                 <th>Timeout</th>
@@ -550,6 +550,20 @@
 
         row.append(textCell(String(index + 1)));
 
+        const model = document.createElement("td");
+        model.className = "model";
+        const strong = document.createElement("strong");
+        strong.textContent = entry.model || "Unknown model";
+        const span = document.createElement("span");
+        span.textContent = entry.reasoning_effort ? `${entry.reasoning_effort} mode` : "mode unavailable";
+        model.append(strong, span);
+        row.append(model);
+
+        row.append(textCell(
+          `${entry.agent || "unknown"}${entry.agent_version ? ` ${entry.agent_version}` : ""}`
+        ));
+        row.append(textCell(entry.reasoning_effort || "--"));
+
         const details = document.createElement("td");
         details.className = "details";
         const job = document.createElement("strong");
@@ -570,20 +584,6 @@
         }
         details.append(tokens, checksum, exception);
         row.append(details);
-
-        const model = document.createElement("td");
-        model.className = "model";
-        const strong = document.createElement("strong");
-        strong.textContent = entry.model || "Unknown model";
-        const span = document.createElement("span");
-        span.textContent = entry.reasoning_effort ? `${entry.reasoning_effort} mode` : "mode unavailable";
-        model.append(strong, span);
-        row.append(model);
-
-        row.append(textCell(
-          `${entry.agent || "unknown"}${entry.agent_version ? ` ${entry.agent_version}` : ""}`
-        ));
-        row.append(textCell(entry.reasoning_effort || "--"));
 
         const status = document.createElement("td");
         const pill = document.createElement("span");
