@@ -277,6 +277,35 @@
         text-decoration: none;
       }
 
+      .end-state {
+        margin-top: 4px;
+      }
+
+      .end-state summary {
+        color: var(--accent);
+        cursor: pointer;
+        font-size: 0.84rem;
+        font-weight: 700;
+      }
+
+      .end-state dl {
+        display: grid;
+        grid-template-columns: max-content minmax(0, 1fr);
+        gap: 2px 8px;
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .end-state dt {
+        font-weight: 700;
+      }
+
+      .end-state dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+
       .snapshot-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -585,6 +614,25 @@
         return `visible counters U/S ${entry.visible_prestige_u || "--"}/${entry.visible_prestige_s || "--"}`;
       }
 
+      function hasEndState(entry) {
+        return typeof entry.verified_prestige_count === "number"
+          || entry.visible_prestige_u
+          || entry.visible_prestige_s
+          || typeof entry.stored_prestige_u === "number"
+          || typeof entry.stored_prestige_s === "number";
+      }
+
+      function appendDefinition(list, term, value) {
+        if (value === null || value === undefined || value === "") {
+          return;
+        }
+        const dt = document.createElement("dt");
+        dt.textContent = term;
+        const dd = document.createElement("dd");
+        dd.textContent = value;
+        list.append(dt, dd);
+      }
+
       let leaderboardPayload = null;
       let selectedVersion = null;
 
@@ -695,6 +743,21 @@
           screenshot.href = entry.screenshot;
           screenshot.textContent = "screenshot";
           details.append(screenshot);
+        }
+        if (hasEndState(entry)) {
+          const endState = document.createElement("details");
+          endState.className = "end-state";
+          const summary = document.createElement("summary");
+          summary.textContent = "end state";
+          const list = document.createElement("dl");
+          appendDefinition(list, "Reward", formatReward(entry.reward));
+          appendDefinition(list, "Prestige", verifiedPrestigeText(entry));
+          appendDefinition(list, "Visible U/S", `${entry.visible_prestige_u || "--"}/${entry.visible_prestige_s || "--"}`);
+          if (typeof entry.stored_prestige_u === "number" || typeof entry.stored_prestige_s === "number") {
+            appendDefinition(list, "Stored U/S", `${entry.stored_prestige_u ?? "--"}/${entry.stored_prestige_s ?? "--"}`);
+          }
+          endState.append(summary, list);
+          details.append(endState);
         }
         row.append(details);
 
