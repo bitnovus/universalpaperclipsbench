@@ -233,6 +233,7 @@ def load_entries(
     job_versions: dict[str, str],
     version_details: dict[str, dict[str, Any]],
     excluded_jobs: set[str],
+    assets_dir: Path,
 ) -> list[dict[str, Any]]:
     entries: list[dict[str, Any]] = []
     if not jobs_dir.exists():
@@ -251,6 +252,9 @@ def load_entries(
                 entry["benchmark_version"] = benchmark_version
                 entry["timeout_seconds"] = version_detail.get("timeout_seconds")
                 entry["browser_surface"] = version_detail.get("browser_surface")
+                screenshot_path = assets_dir / f"{job_dir.name}.png"
+                if screenshot_path.exists():
+                    entry["screenshot"] = f"assets/runs/{job_dir.name}.png"
                 entries.append(entry)
 
     def sort_key(entry: dict[str, Any]) -> tuple[float, int, int, str]:
@@ -307,6 +311,7 @@ def main() -> int:
     parser.add_argument("--jobs-dir", default="jobs", type=Path)
     parser.add_argument("--output", default="docs/leaderboard.json", type=Path)
     parser.add_argument("--versions", default="docs/leaderboard-versions.json", type=Path)
+    parser.add_argument("--assets-dir", default="docs/assets/runs", type=Path)
     parser.add_argument("--include-dry-runs", action="store_true")
     args = parser.parse_args()
 
@@ -318,6 +323,7 @@ def main() -> int:
         job_versions,
         version_details,
         excluded_jobs,
+        args.assets_dir,
     )
     payload = build_payload(entries, current_version, versions)
 

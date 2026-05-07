@@ -270,6 +270,57 @@
         font-size: 0.84rem;
       }
 
+      .details a {
+        color: var(--accent);
+        font-size: 0.84rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .snapshot-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .snapshot-card {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .snapshot-card a {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .snapshot-card img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        object-position: top left;
+        border-bottom: 1px solid var(--line);
+        background: #f8f8f8;
+      }
+
+      .snapshot-meta {
+        display: grid;
+        gap: 2px;
+        padding: 10px 12px 12px;
+      }
+
+      .snapshot-meta strong {
+        font-size: 0.92rem;
+      }
+
+      .snapshot-meta span {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
       .pill {
         display: inline-flex;
         align-items: center;
@@ -347,7 +398,8 @@
         }
 
         .method-grid,
-        .about-grid {
+        .about-grid,
+        .snapshot-grid {
           grid-template-columns: 1fr;
         }
 
@@ -401,6 +453,12 @@
           </table>
           <div class="empty" id="empty" hidden>No runs found in leaderboard data.</div>
         </div>
+      </section>
+
+      <section class="section" aria-labelledby="snapshots-heading">
+        <h2 id="snapshots-heading">Run Snapshots</h2>
+        <div class="snapshot-grid" id="snapshot-grid"></div>
+        <div class="empty" id="snapshot-empty" hidden>No screenshots are available for this selection.</div>
       </section>
 
       <section class="section" aria-labelledby="methodology-heading">
@@ -594,6 +652,12 @@
           }
         }
         details.append(tokens, checksum, exception);
+        if (entry.screenshot) {
+          const screenshot = document.createElement("a");
+          screenshot.href = entry.screenshot;
+          screenshot.textContent = "screenshot";
+          details.append(screenshot);
+        }
         row.append(details);
 
         row.append(textCell(formatDuration(entry.agent_duration_seconds || entry.duration_seconds)));
@@ -603,6 +667,39 @@
         row.append(textCell(entry.benchmark_version || "--"));
 
         return row;
+      }
+
+      function renderSnapshots(entries) {
+        const grid = document.getElementById("snapshot-grid");
+        const empty = document.getElementById("snapshot-empty");
+        const snapshots = entries.filter((entry) => entry.screenshot);
+
+        grid.replaceChildren(...snapshots.map((entry) => {
+          const article = document.createElement("article");
+          article.className = "snapshot-card";
+
+          const link = document.createElement("a");
+          link.href = entry.screenshot;
+          const image = document.createElement("img");
+          image.src = entry.screenshot;
+          image.loading = "lazy";
+          image.alt = `Screenshot from ${entry.job_name || entry.model || "a benchmark run"}`;
+          link.append(image);
+
+          const meta = document.createElement("div");
+          meta.className = "snapshot-meta";
+          const title = document.createElement("strong");
+          title.textContent = entry.model || "Unknown model";
+          const setup = document.createElement("span");
+          setup.textContent = `${entry.reasoning_effort || "unknown"} · ${statusLabels[entry.status] || entry.status || "unknown"} · ${formatDuration(entry.agent_duration_seconds || entry.duration_seconds)}`;
+          const job = document.createElement("span");
+          job.textContent = entry.job_name || "--";
+          meta.append(title, setup, job);
+
+          article.append(link, meta);
+          return article;
+        }));
+        empty.hidden = snapshots.length > 0;
       }
 
       function renderVersionButtons(payload) {
@@ -645,6 +742,7 @@
         const body = document.getElementById("leaderboard-body");
         body.replaceChildren(...entries.map(renderEntry));
         document.getElementById("empty").hidden = entries.length > 0;
+        renderSnapshots(entries);
       }
 
       fetch("leaderboard.json", { cache: "no-store" })
