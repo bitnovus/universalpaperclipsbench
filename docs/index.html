@@ -388,8 +388,8 @@
                 <th>Model</th>
                 <th>Agent</th>
                 <th>Effort</th>
-                <th>Details</th>
                 <th>Result</th>
+                <th>Details</th>
                 <th>Runtime</th>
                 <th>Timeout</th>
                 <th>Surface</th>
@@ -564,6 +564,17 @@
         ));
         row.append(textCell(entry.reasoning_effort || "--"));
 
+        const status = document.createElement("td");
+        const pill = document.createElement("span");
+        pill.className = `pill ${entry.status || "game_failure"}`;
+        pill.textContent = statusLabels[entry.status] || entry.status || "unknown";
+        status.append(pill);
+        const reward = document.createElement("span");
+        reward.className = "muted";
+        reward.textContent = ` reward ${formatReward(entry.reward)}`;
+        status.append(reward);
+        row.append(status);
+
         const details = document.createElement("td");
         details.className = "details";
         const job = document.createElement("strong");
@@ -584,17 +595,6 @@
         }
         details.append(tokens, checksum, exception);
         row.append(details);
-
-        const status = document.createElement("td");
-        const pill = document.createElement("span");
-        pill.className = `pill ${entry.status || "game_failure"}`;
-        pill.textContent = statusLabels[entry.status] || entry.status || "unknown";
-        status.append(pill);
-        const reward = document.createElement("span");
-        reward.className = "muted";
-        reward.textContent = ` reward ${formatReward(entry.reward)}`;
-        status.append(reward);
-        row.append(status);
 
         row.append(textCell(formatDuration(entry.agent_duration_seconds || entry.duration_seconds)));
         row.append(textCell(formatDuration(entry.timeout_seconds)));
