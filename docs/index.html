@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Universal Paperclips Benchmark Leaderboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
       :root {
         color-scheme: light;
@@ -35,9 +38,14 @@
           var(--bg);
         color: var(--text);
         font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          "Instrument Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           sans-serif;
         line-height: 1.45;
+      }
+
+      a {
+        color: var(--accent);
+        font-weight: 700;
       }
 
       main {
@@ -482,7 +490,8 @@
           <p class="lede">
             Created by Frank Lantz, Universal Paperclips is a compact browser game that
             turns a single button into hours of compounding decisions, phase changes, and
-            delayed payoff. That makes it a natural Harbor eval for long-running,
+            delayed payoff. That makes it a natural
+            <a href="https://www.harborframework.com/">Harbor</a> eval for long-running,
             long-horizon agents: success requires sustained browser control, adaptation from
             visible feedback, and a real prestige reset verified outside the agent context.
           </p>
@@ -560,7 +569,8 @@
       </section>
 
       <footer>
-        Data is generated from local Harbor result files with
+        Data is generated from local <a href="https://www.harborframework.com/">Harbor</a>
+        result files with
         <code>scripts/update_leaderboard.py</code>. Raw <code>jobs/</code> artifacts are not
         published. See <a href="benchmark.md">benchmark methodology</a> or the
         <a href="https://github.com/bitnovus/universalpaperclipsbench">GitHub repository</a>.
