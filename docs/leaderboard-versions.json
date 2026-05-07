@@ -1,5 +1,8 @@
 {
   "current_version": "v1.1.2",
+  "exclude_jobs": [
+    "codex-gpt-5-5-high-v1-1-2-mcp-001"
+  ],
   "versions": [
     {
       "version": "v1.1.2",
@@ -9,7 +12,8 @@
       "browser_surface": "CLI + restricted MCP",
       "comparison_note": "Current public baseline. Compare scores directly within this version.",
       "jobs": [
-        "claude-sonnet-4-6-auto-v1-1-2-mcp-ralph-001"
+        "claude-sonnet-4-6-auto-v1-1-2-mcp-ralph-001",
+        "codex-gpt-5-5-xhigh-v1-1-2-mcp-001"
       ]
     },
     {

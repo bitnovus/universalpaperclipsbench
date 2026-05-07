@@ -9,6 +9,31 @@
   "entries": [
     {
       "agent": "codex",
+      "agent_duration_seconds": 27545,
+      "agent_version": "0.128.0",
+      "benchmark_version": "v1.1.2",
+      "browser_surface": "CLI + restricted MCP",
+      "cache_tokens": 442591232,
+      "duration_seconds": 27570,
+      "exception_type": null,
+      "finished_at": "2026-05-06T23:29:34.262321Z",
+      "harbor_job_id": "8ab9196a-f755-44e8-bfaa-ff75a97a6361",
+      "input_tokens": 449136623,
+      "job_name": "codex-gpt-5-5-xhigh-v1-1-2-mcp-001",
+      "model": "gpt-5.5",
+      "output_tokens": 281638,
+      "reasoning_effort": "xhigh",
+      "reward": 1.0,
+      "started_at": "2026-05-06T15:50:04.165563Z",
+      "status": "success",
+      "task": "universal-paperclips/prestige",
+      "task_checksum": "e2b060d25a5a8153b4e3797568838bb3b3504a053f8d6aac18038af61b70323a",
+      "task_path": "datasets/universal-paperclips/prestige",
+      "timeout_seconds": 57600,
+      "trial_name": "prestige__mrndSE4"
+    },
+    {
+      "agent": "codex",
       "agent_duration_seconds": 41629,
       "agent_version": "0.125.0",
       "benchmark_version": "v1.0.0",
@@ -441,15 +466,15 @@
       "trial_name": "prestige__jf6MP2U"
     }
   ],
-  "generated_at": "2026-05-06T05:48:52.095965Z",
+  "generated_at": "2026-05-07T00:21:49.643152Z",
   "source": "local Harbor job result.json files",
   "summary": {
     "agent_errors": 9,
     "errors": 9,
     "failures": 3,
     "game_failures": 3,
-    "runs": 17,
-    "successes": 3,
+    "runs": 18,
+    "successes": 4,
     "timeouts": 2
   },
   "versions": [
@@ -458,7 +483,8 @@
       "comparison_note": "Current public baseline. Compare scores directly within this version.",
       "description": "Adds an explicit fastest-success objective and stalled-strategy reassessment guidance to v1.1.1.",
       "jobs": [
-        "claude-sonnet-4-6-auto-v1-1-2-mcp-ralph-001"
+        "claude-sonnet-4-6-auto-v1-1-2-mcp-ralph-001",
+        "codex-gpt-5-5-xhigh-v1-1-2-mcp-001"
       ],
       "label": "v1.1.2",
       "timeout_seconds": 57600,

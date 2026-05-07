@@ -46,18 +46,24 @@ def read_json(path: Path) -> dict[str, Any] | None:
 
 def load_version_config(
     config_path: Path | None,
-) -> tuple[str, list[dict[str, Any]], dict[str, str], dict[str, dict[str, Any]]]:
+) -> tuple[str, list[dict[str, Any]], dict[str, str], dict[str, dict[str, Any]], set[str]]:
     default_version = "v1.1.1"
     if config_path is None:
-        return default_version, [], {}, {}
+        return default_version, [], {}, {}, set()
 
     data = read_json(config_path)
     if not data:
-        return default_version, [], {}, {}
+        return default_version, [], {}, {}, set()
 
     current_version = data.get("current_version")
     if not isinstance(current_version, str):
         current_version = default_version
+
+    excluded_jobs = {
+        job_name
+        for job_name in data.get("exclude_jobs", [])
+        if isinstance(job_name, str)
+    }
 
     versions = data.get("versions") or []
     normalized_versions: list[dict[str, Any]] = []
@@ -92,7 +98,7 @@ def load_version_config(
         normalized_versions.insert(0, current)
         version_details[current_version] = current
 
-    return current_version, normalized_versions, job_versions, version_details
+    return current_version, normalized_versions, job_versions, version_details, excluded_jobs
 
 
 def reward_from(result: dict[str, Any]) -> float | None:
@@ -226,12 +232,15 @@ def load_entries(
     current_version: str,
     job_versions: dict[str, str],
     version_details: dict[str, dict[str, Any]],
+    excluded_jobs: set[str],
 ) -> list[dict[str, Any]]:
     entries: list[dict[str, Any]] = []
     if not jobs_dir.exists():
         return entries
 
     for job_dir in sorted(path for path in jobs_dir.iterdir() if path.is_dir()):
+        if job_dir.name in excluded_jobs:
+            continue
         if not include_dry_runs and job_dir.name.startswith("dry-run"):
             continue
         for trial_path in sorted(job_dir.glob("*/result.json")):
@@ -301,13 +310,14 @@ def main() -> int:
     parser.add_argument("--include-dry-runs", action="store_true")
     args = parser.parse_args()
 
-    current_version, versions, job_versions, version_details = load_version_config(args.versions)
+    current_version, versions, job_versions, version_details, excluded_jobs = load_version_config(args.versions)
     entries = load_entries(
         args.jobs_dir,
         args.include_dry_runs,
         current_version,
         job_versions,
         version_details,
+        excluded_jobs,
     )
     payload = build_payload(entries, current_version, versions)
 
